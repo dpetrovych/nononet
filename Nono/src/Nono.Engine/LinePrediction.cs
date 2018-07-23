@@ -8,7 +8,7 @@ namespace Nono.Engine
 {
     public class LinePrediction
     {
-        public static IEnumerable<Box[]> Generate(uint[] definition, int length)
+        public static Box[][] Generate(uint[] definition, int length)
         {
             if (length <= 0)
                 throw new ArgumentOutOfRangeException(nameof(length));
@@ -22,7 +22,7 @@ namespace Nono.Engine
                 throw new ArgumentException($"Definition exeeds dimention limit, {definitionSpace} > {length}", nameof(definition));
 
             var layouts = GenerateInternal(definition, length);
-            return layouts.Select(l => l.Build());
+            return layouts.Select(l => l.Build()).ToArray();
         }
 
         private static IEnumerable<Layout> GenerateInternal(Span<uint> definition, int length)
