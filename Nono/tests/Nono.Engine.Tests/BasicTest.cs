@@ -21,7 +21,7 @@ namespace Nono.Engine.Tests
             var rowHint = new[] { columnPower };
             var columnHint = new[] { rowPower };
 
-            var solve = new Solve();
+            var solve = new Solver();
             var result = solve.Run(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
 
             result.GetLength(0).Should().Be(rowPower);

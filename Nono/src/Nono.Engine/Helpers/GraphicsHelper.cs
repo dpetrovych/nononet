@@ -22,7 +22,7 @@ namespace Nono.Engine.Helpers
             return sb.ToString();
         }
 
-        public static string Map(Box[] line)
+        public static string Map(Line line)
         {
             return new string(line.Select(Map).ToArray());
         }

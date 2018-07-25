@@ -8,13 +8,13 @@ namespace Nono.Engine
 {
     public class LinePrediction
     {
-        public static Box[][] Generate(uint[] definition, int length)
+        public static PredictionCollection Generate(uint[] definition, int length)
         {
             if (length <= 0)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
             if (definition.Length == 0)
-                return new[] { Layout.Empty(length).Build() };
+                return new PredictionCollection { Layout.Empty(length).Build() };
 
             var definitionSpace = DefinitionSpace(definition);
 
@@ -22,7 +22,7 @@ namespace Nono.Engine
                 throw new ArgumentException($"Definition exeeds dimention limit, {definitionSpace} > {length}", nameof(definition));
 
             var layouts = GenerateInternal(definition, length);
-            return layouts.Select(l => l.Build()).ToArray();
+            return new PredictionCollection( layouts.Select(l => l.Build()) );
         }
 
         private static IEnumerable<Layout> GenerateInternal(Span<uint> definition, int length)
@@ -83,7 +83,7 @@ namespace Nono.Engine
                 return new Layout { Value = merge };
             }
 
-            public Box[] Build()
+            public Line Build()
             {
                 var result = new Box[Value.Sum()];
                 var current = 0;
@@ -98,7 +98,7 @@ namespace Nono.Engine
                     }
                 }
 
-                return result;
+                return new Line(result);
             }
 
 
