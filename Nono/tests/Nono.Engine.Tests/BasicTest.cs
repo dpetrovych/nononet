@@ -18,15 +18,15 @@ namespace Nono.Engine.Tests
         public void BulkFill_Rectangle(int rowPower, int columnPower)
         {
             // Arrange
-            var rowHint = new[] { columnPower };
-            var columnHint = new[] { rowPower };
+            var rowHint = new[] { (uint)columnPower };
+            var columnHint = new[] { (uint)rowPower };
 
             var solve = new Solver();
             var result = solve.Run(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
 
-            result.GetLength(0).Should().Be(rowPower);
-            result.GetLength(1).Should().Be(columnPower);
-            result.ForEach((i, j) => result[i, j].Should().Be(Box.Filled));
+            result.RowCount.Should().Be(rowPower);
+            result.ColumnCount.Should().Be(columnPower);
+            result.All(x => x == Box.Filled).Should().BeTrue();
         }
     }
 }

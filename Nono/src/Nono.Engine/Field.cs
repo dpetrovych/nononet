@@ -39,7 +39,7 @@ namespace Nono.Engine
 
         public IEnumerable<Cell> GetRowEnumerator(int rowIndex)
         {
-            if (rowIndex <= 0 || rowIndex >= RowCount)
+            if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
             
             for (int i = 0; i < ColumnCount; i++)
@@ -48,7 +48,7 @@ namespace Nono.Engine
 
         public IEnumerable<Cell> GetColumnEnumerator(int columnIndex)
         {
-            if (columnIndex <= 0 || columnIndex >= ColumnCount)
+            if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
             for (int i = 0; i < RowCount; i++)
@@ -57,7 +57,7 @@ namespace Nono.Engine
 
         public IEnumerable<Box> GetRow(int rowIndex)
         {
-            if (rowIndex <= 0 || rowIndex >= RowCount)
+            if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
 
             for (int i = 0; i < RowCount; i++)
@@ -66,7 +66,7 @@ namespace Nono.Engine
 
         public IEnumerable<Box> GetColumn(int columnIndex)
         {
-            if (columnIndex <= 0 || columnIndex >= ColumnCount)
+            if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
             for (int i = 0; i < ColumnCount; i++)

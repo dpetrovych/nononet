@@ -6,20 +6,20 @@ namespace Nono.Engine
 {
     public class Solver
     {
-        public Box[,] Run(IEnumerable<uint[]> rows, IEnumerable<uint[]> columns)
+        public Field Run(IEnumerable<uint[]> rows, IEnumerable<uint[]> columns)
         {
             var rowsDef = rows.ToList();
             var columnsDef = columns.ToList();
 
-            var field = new Box[rowsDef.Count, columnsDef.Count];
+            Field field;
 
             var rowsPredictions = rowsDef.Select(row => LinePrediction.Generate(row, columnsDef.Count)).ToArray();
             var columnsPredictions =
                 columnsDef.Select(column => LinePrediction.Generate(column, rowsDef.Count)).ToArray();
-
-            while (Predict(rowsPredictions, columnsPredictions, out var nextField))
+            
+            while (!Predict(rowsPredictions, columnsPredictions, out field))
             {
-                var filterResult = Filter(rowsPredictions, columnsPredictions, nextField);
+                var filterResult = Filter(rowsPredictions, columnsPredictions, field);
 
                 if (filterResult == FilterResult.Unsolvable)
                     throw new InvalidOperationException("Field is unsolvable");
