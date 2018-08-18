@@ -6,6 +6,24 @@ namespace Nono.Engine.Helpers
 {
     public static class GraphicsHelper
     {
+        public static string Map(Field field)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < field.RowCount; i++)
+            {
+                var row = field.GetRow(i);
+
+                foreach (var cell in row)
+                {
+                    sb.Append(Map(cell));
+                }
+
+                sb.Append(Environment.NewLine);
+            }
+
+            return sb.ToString();
+        }
+
         public static string Map(Box[,] square)
         {
             var sb = new StringBuilder();
@@ -27,12 +45,13 @@ namespace Nono.Engine.Helpers
             return new string(line.Select(Map).ToArray());
         }
 
+
         public static char Map(Box box)
         {
             switch (box)
             {
-                case Box.Filled: return '_';
-                case Box.CrossedOut: return 'X';
+                case Box.Filled: return '#';
+                case Box.CrossedOut: return '_';
             }
 
             return ' ';

@@ -60,7 +60,7 @@ namespace Nono.Engine
             if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
 
-            for (int i = 0; i < RowCount; i++)
+            for (int i = 0; i < ColumnCount; i++)
                 yield return _field[GetPosition(rowIndex, i)];
         }
 
@@ -69,7 +69,7 @@ namespace Nono.Engine
             if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
-            for (int i = 0; i < ColumnCount; i++)
+            for (int i = 0; i < RowCount; i++)
                 yield return _field[GetPosition(i, columnIndex)];
         }
 
