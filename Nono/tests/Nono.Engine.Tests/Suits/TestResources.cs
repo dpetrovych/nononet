@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Nono.Engine.Tests
+namespace Nono.Engine.Tests.Suits
 {
     public static class TestResources
     {
@@ -29,7 +29,7 @@ namespace Nono.Engine.Tests
             _stream = stream;
         }
 
-        public (uint[][] rows, uint[][] columns) Read()
+        public TestCase Read()
         {
             _stream.Position = 0;
 
@@ -68,12 +68,14 @@ namespace Nono.Engine.Tests
                             rows = ReadNumberHints(reader, height);
                             break;
 
+                        case "goal": 
+
                         default:
                             continue;
                     }
                 } while (true);
 
-                return (rows, columns);
+                return new Test;
             }
         }
 

@@ -24,6 +24,26 @@ namespace Nono.Engine
             _field = new Box[rowCount * columnCount];
         }
 
+        public Field(Box[] cells, int rowCount, int columnCount)
+        {
+            if (cells == null)
+                throw new ArgumentNullException(nameof(cells));
+
+            if (rowCount <= 0)
+                throw new ArgumentOutOfRangeException(nameof(rowCount));
+
+            if (columnCount <= 0)
+                throw new ArgumentOutOfRangeException(nameof(columnCount));
+
+            if (cells.Length != rowCount * columnCount)
+                throw new ArgumentException($"Cell array should be {rowCount}x{columnCount} in single dimention", nameof(cells));
+
+            RowCount = rowCount;
+            ColumnCount = columnCount;
+
+            _field = (Box[])cells.Clone();
+        }
+
         public int RowCount { get; }
 
         public int ColumnCount { get; }
