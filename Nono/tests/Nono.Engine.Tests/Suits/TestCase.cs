@@ -2,14 +2,22 @@
 {
     public class TestCase
     {
-        public uint Height { get; set; }
+        public TestCase(string title, uint[][] rows, uint[][] columns, Field goal)
+        {
+            Title = title;
+            Rows = rows;
+            Columns = columns;
+            Goal = goal;
+        }
 
-        public uint Width { get; set; }
+        public string Title { get; }
 
-        public uint[][] Rows { get; set; }
+        public uint[][] Rows { get; }
 
-        public uint[][] Columns { get; set; }
+        public uint[][] Columns { get; }
 
-        public Field Goal { get; set; }
+        public Field Goal { get; }
+
+        public override string ToString() => Title;
     }
 }

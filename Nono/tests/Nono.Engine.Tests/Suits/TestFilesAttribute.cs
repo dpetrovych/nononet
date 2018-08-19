@@ -6,17 +6,24 @@ namespace Nono.Engine.Tests.Suits
 {
     public class TestFilesAttribute : DataAttribute
     {
+        private readonly string _filePath;
+
+        public TestFilesAttribute(string filePath)
+        {
+            _filePath = filePath;
+        }
+
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
-            var testFiles = TestResources.GetAllFiles();
+            var testFiles = TestResources.GetFiles(_filePath);
 
-            foreach (var testFile in testFiles)
+            foreach (var (name, stream) in testFiles)
             {
-                using (var reader = new NonFileReader(testFile))
+                using (var reader = new NonFileReader(name, stream))
                 {
-                    var (rows, columns) = reader.Read();
+                    var testCase = reader.Read();
 
-                    yield return new object[] { rows, columns };
+                    yield return new object[] { testCase };
                 }
             }
         }

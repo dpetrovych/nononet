@@ -96,6 +96,20 @@ namespace Nono.Engine
         public IEnumerator<Box> GetEnumerator() => ((IEnumerable<Box>)_field).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() =>  GetEnumerator();
+
+        public override bool Equals(object obj)
+        {
+            var field = obj as Field;
+            return field != null &&
+                   RowCount == field.RowCount &&
+                   ColumnCount == field.ColumnCount &&
+                   _field.SequenceEqual(field._field);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_field, RowCount, ColumnCount);
+        }
     }
     
     public struct Cell

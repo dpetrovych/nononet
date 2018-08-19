@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Nono.Engine
 {
     public class Solver
     {
-        public Field Run(IEnumerable<uint[]> rows, IEnumerable<uint[]> columns)
+        public Field Run(IEnumerable<uint[]> rows, IEnumerable<uint[]> columns, CancellationToken token = default(CancellationToken))
         {
             var rowsDef = rows.ToList();
             var columnsDef = columns.ToList();
@@ -23,12 +24,18 @@ namespace Nono.Engine
 
                 if (filterResult == FilterResult.Unsolvable)
                     throw new InvalidOperationException("Field is unsolvable");
+
+                token.ThrowIfCancellationRequested();
             }
 
             return field;
         }
 
-        private static bool Predict(PredictionCollection[] rowsPredictions, PredictionCollection[] columnsPredictions,
+
+
+        private static bool Predict(
+            PredictionCollection[] rowsPredictions, 
+            PredictionCollection[] columnsPredictions,
             out Field fieldOut)
         {
             var field = new Field(rowsPredictions.Length, columnsPredictions.Length);

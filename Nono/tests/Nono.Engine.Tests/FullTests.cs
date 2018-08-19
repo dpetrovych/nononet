@@ -1,4 +1,7 @@
-﻿using Nono.Engine.Helpers;
+﻿using System;
+using System.Threading;
+using FluentAssertions;
+using Nono.Engine.Helpers;
 using Nono.Engine.Tests.Suits;
 using Xunit;
 using Xunit.Abstractions;
@@ -7,25 +10,51 @@ namespace Nono.Engine.Tests
 {
     public class FullTests
     {
-        private readonly ITestOutputHelper output;
+        private readonly ITestOutputHelper _output;
 
         public FullTests(ITestOutputHelper output)
         {
-            this.output = output;
+            _output = output;
         }
 
         [Theory]
-        [TestFiles]
-        public void TestOutput(uint[][] rows, uint[][] columns)
+        [TestFiles("Data.Simple")]  // 4
+        public void Simple(TestCase testCase)
         {
-            var solve = new Solver();
+            AssertAsync.CompletesIn(1, SolveAction(testCase));
+        }
 
-            AssertAsync.CompletesIn(5, () =>
+        [Theory]
+        [TestFiles("Data.Mid")]     // 28
+        public void Mid(TestCase testCase)
+        {
+            AssertAsync.CompletesIn(20, SolveAction(testCase));
+        }
+
+        [Theory]
+        [TestFiles("Data.Dificult")]     // 3
+        public void Difficult(TestCase testCase)
+        {
+            AssertAsync.CompletesIn(120, SolveAction(testCase));
+        }
+
+        [Theory]
+        [TestFiles("Data.Huge")]     // 5
+        public void Huge(TestCase testCase)
+        {
+            AssertAsync.CompletesIn(120, SolveAction(testCase));
+        }
+
+        private Action<CancellationToken> SolveAction(TestCase testCase)
+        {
+            return token =>
             {
-                var result = solve.Run(rows, columns);
+                var solve = new Solver();
+                var result = solve.Run(testCase.Rows, testCase.Columns, token);
+                _output.WriteLine(GraphicsHelper.Map(result));
 
-                output.WriteLine(GraphicsHelper.Map(result));
-            });            
+                result.Should().Equal(testCase.Goal);
+            };
         }
     }
 }
