@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Nono.Engine.Models;
 
-namespace Nono.Engine.Tests.Suits
+namespace Nono.Engine.Tests.Data
 {
     public class NonFileReader : IDisposable
     {

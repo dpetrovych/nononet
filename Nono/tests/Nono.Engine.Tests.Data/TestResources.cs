@@ -3,13 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Nono.Engine.Tests.Suits
+namespace Nono.Engine.Tests.Data
 {
     public static class TestResources
     {
         public static IEnumerable<(string, Stream)> GetFiles(string filepath)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetAssembly(typeof(TestResources));
             var assemblyResources = assembly.GetManifestResourceNames();
 
             var fileNameStart = $"{assembly.GetName().Name}.{filepath}";

@@ -2,7 +2,7 @@
 using System.Reflection;
 using Xunit.Sdk;
 
-namespace Nono.Engine.Tests.Suits
+namespace Nono.Engine.Tests.Data
 {
     public class TestFilesAttribute : DataAttribute
     {

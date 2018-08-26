@@ -27,25 +27,6 @@ namespace Nono.Engine.Tests.Suits
             cts.CancelAfter(timeout * 1000);
 
             Task.Run(() => action(cts.Token), cts.Token).GetAwaiter().GetResult();
-
-
-            //var completedInTime = Task.WaitAll(new[] { task }, TimeSpan.FromSeconds(timeout));
-
-            //if (task.Exception != null)
-            //{
-            //    if (task.Exception.InnerExceptions.Count == 1)
-            //    {
-            //        throw task.Exception.InnerExceptions[0];
-            //    }
-
-            //    throw task.Exception;
-            //}
-
-            //if (!completedInTime)
-            //{
-                
-            //    throw new TimeoutException($"Task did not complete in {timeout} seconds.");
-            //}
         }
     }
 }

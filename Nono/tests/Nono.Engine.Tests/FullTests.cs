@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using Nono.Engine.Helpers;
+using Nono.Engine.Tests.Data;
 using Nono.Engine.Tests.Suits;
 using Xunit;
 using Xunit.Abstractions;
