@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Nono.Engine
+namespace Nono.Engine.Models
 {
     public class Field : IEnumerable<Box>
     {

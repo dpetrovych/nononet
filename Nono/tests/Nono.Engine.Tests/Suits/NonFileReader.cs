@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Nono.Engine.Models;
 
 namespace Nono.Engine.Tests.Suits
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using Nono.Engine.Helpers;
@@ -51,9 +52,17 @@ namespace Nono.Engine.Tests
             {
                 var solve = new Solver();
                 var result = solve.Run(testCase.Rows, testCase.Columns, token);
-                _output.WriteLine(GraphicsHelper.Map(result));
 
-                result.Should().Equal(testCase.Goal);
+                _output.WriteLine(result.Steps.Count.ToString());
+
+                foreach (var step in result.Steps.Reverse())
+                {
+                    _output.WriteLine(GraphicsHelper.Map(step));
+                    _output.WriteLine("\r\n" + new string('-', result.Field.ColumnCount) + "\r\n");
+                }
+                
+
+                result.Field.Should().Equal(testCase.Goal);
             };
         }
     }

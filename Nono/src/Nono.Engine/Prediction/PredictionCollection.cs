@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nono.Engine
+namespace Nono.Engine.Prediction
 {
     public class PredictionCollection : List<Line>
     {

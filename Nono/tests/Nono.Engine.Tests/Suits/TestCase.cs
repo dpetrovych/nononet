@@ -1,4 +1,6 @@
-﻿namespace Nono.Engine.Tests.Suits
+﻿using Nono.Engine.Models;
+
+namespace Nono.Engine.Tests.Suits
 {
     public class TestCase
     {

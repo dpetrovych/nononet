@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Nono.Engine.Models;
+using Nono.Engine.Prediction;
 
 namespace Nono.Engine
 {
     public class Solver
     {
-        public Field Run(IEnumerable<uint[]> rows, IEnumerable<uint[]> columns, CancellationToken token = default(CancellationToken))
+        public Solution Run(IEnumerable<uint[]> rows, IEnumerable<uint[]> columns, CancellationToken token = default(CancellationToken))
         {
             var rowsDef = rows.ToList();
             var columnsDef = columns.ToList();
 
             Field field;
+            var solution = new Solution();
 
             var rowsPredictions = rowsDef.Select(row => LinePrediction.Generate(row, columnsDef.Count)).ToArray();
             var columnsPredictions =
@@ -20,6 +23,8 @@ namespace Nono.Engine
             
             while (!Predict(rowsPredictions, columnsPredictions, out field))
             {
+                solution.AddStep(field);
+
                 var filterResult = Filter(rowsPredictions, columnsPredictions, field);
 
                 if (filterResult == FilterResult.Unsolvable)
@@ -28,9 +33,12 @@ namespace Nono.Engine
                 token.ThrowIfCancellationRequested();
             }
 
-            return field;
+            solution.AddResult(field);
+
+            return solution;
         }
 
+        
 
 
         private static bool Predict(

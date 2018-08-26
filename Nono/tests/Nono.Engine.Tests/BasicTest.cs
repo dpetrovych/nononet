@@ -23,10 +23,12 @@ namespace Nono.Engine.Tests
 
             var solve = new Solver();
             var result = solve.Run(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
+            
 
-            result.RowCount.Should().Be(rowPower);
-            result.ColumnCount.Should().Be(columnPower);
-            result.All(x => x == Box.Filled).Should().BeTrue();
+            result.Steps.Count.Should().Be(1);
+            result.Field.RowCount.Should().Be(rowPower);
+            result.Field.ColumnCount.Should().Be(columnPower);
+            result.Field.All(x => x == Box.Filled).Should().BeTrue();
         }
     }
 }
