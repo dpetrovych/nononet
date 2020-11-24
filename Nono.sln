@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono", "Nono\Nono.csproj", "{E9353770-21AC-4AFF-94C2-633AA1E7D44F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono", "src\Nono\Nono.csproj", "{E9353770-21AC-4AFF-94C2-633AA1E7D44F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono.Engine", "src\Nono.Engine\Nono.Engine.csproj", "{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9C5}"
 EndProject
