@@ -1,7 +1,7 @@
 ﻿using System;
 using Nono.Engine;
 
-namespace Nono
+namespace Nono.Cli
 {
     class Program
     {
