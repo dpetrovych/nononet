@@ -49,34 +49,34 @@ namespace Nono.Engine
         }
 
         /// <summary>
-        /// Calculates how many combinations of spans (thus block positions) available for a specific task for a line length
+        /// Calculates how many combinations of spans (thus block positions) available for a specific cues for a line length
         /// Helps to prioritize reduce operations before calculating actual spans
 
         /// Uses divide &amp; conquer strategy by dividing line in 2 and calculating respective counts in left and right parts.
         /// Than assembles results by multiplying.
 
-        /// Also reduces all blocks in task to length of 1 and space to length of 1.
+        /// Also reduces all blocks in cues to length of 1 and space to length of 1.
         /// </summary>
-        public static long Count(Span<uint> task, int length)
+        public static long Count(Span<uint> cues, int length)
         {
-            var extraBlockSpace = (MIN_BLOCK_SPACE - 1) * (task.Length - 1);
-            var extraBlockLength = task.Sum() - task.Length;
-            return CountZippedBlocks(task.Length, (int)(length - extraBlockSpace - extraBlockLength));
+            var extraBlockSpace = (MIN_BLOCK_SPACE - 1) * (cues.Length - 1);
+            var extraBlockLength = cues.Sum() - cues.Length;
+            return CountZippedBlocks(cues.Length, (int)(length - extraBlockSpace - extraBlockLength));
         }
 
-        public static bool IsHot(Span<uint> task, int length)
+        public static bool IsHot(Span<uint> cues, int length)
         {
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
 
-            var maxBlock = task.Length > 0 ? task.Max() : 0;
-            return Moves(task, length) < maxBlock;
+            var maxBlock = cues.Length > 0 ? cues.Max() : 0;
+            return Moves(cues, length) < maxBlock;
         }
 
-        public static uint Moves(Span<uint> task, int length)
+        public static uint Moves(Span<uint> cues, int length)
         {
             unchecked
             {
-                return (uint)(length - task.Sum() - MIN_BLOCK_SPACE * (task.Length - 1));
+                return (uint)(length - cues.Sum() - MIN_BLOCK_SPACE * (cues.Length - 1));
             }
         }
     }

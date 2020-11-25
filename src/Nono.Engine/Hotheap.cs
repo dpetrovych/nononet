@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,24 +6,34 @@ namespace Nono.Engine
 {
     internal class Hotheap
     {
-        private HashSet<TaskLine> _heap;
+        private HashSet<Task> _heap;
 
-        public Tasks _tasks;
+        public TaskCollection _tasks;
 
-        public Hotheap(Tasks tasks)
+        public Hotheap(TaskCollection tasks)
         {
             _tasks = tasks;
             _heap = tasks.Where(task => task.IsHotEmpty).ToHashSet();
         }
 
-        public TaskLine? Pop()
+        public bool TryPop(out Task line)
         {
-            if (_heap.Count == 0)
-                return null;
+            line = _heap.OrderBy(x => x.Count).FirstOrDefault();
+            if (line == null) 
+                return false;
 
-            var minCount = _heap.OrderBy(x => x.Count).First();
-            _heap.Remove(minCount);
-            return minCount;
+            _heap.Remove(line);
+            return true;
+        }
+
+        public void PushDiff(DiffLine diff, Orientation orienation)
+        {
+            var opposite = orienation.Opposite();
+            var oppsiteTasks = diff
+                .NonEmptyIndexes()
+                .Select(i => _tasks[opposite, i]);
+
+            _heap.UnionWith(oppsiteTasks);
         }
     }
 }

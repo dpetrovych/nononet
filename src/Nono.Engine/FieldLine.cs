@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Nono.Engine
+{
+    public sealed class FieldLine : Line
+    {
+        public FieldLine(IEnumerable<Box> boxes) : base(boxes)
+        {
+        }
+
+        public DiffLine Diff(Line line)
+        {
+            if (line.Count != Count)
+                throw new ArgumentException("Mismatch in length", nameof(line));
+
+            var diffEnumerator = Enumerable.Zip(
+                this, line, (thisBox, otherBox) => thisBox == Box.Empty ? otherBox : thisBox);
+
+            return new DiffLine(diffEnumerator);
+        }
+    }
+
+    public static class FieldLineExtensions
+    {
+        public static IEnumerable<int> IndexFromCenter(int length)
+        {
+            var middleLeft = (length - 1) >> 1;
+            var middleRight = length >> 1;
+            var oddShift = length % 2;
+
+            if (middleLeft == middleRight)
+                yield return middleLeft;
+
+            for (var i = oddShift; i < middleRight + oddShift; i++)
+            {
+                yield return middleLeft - i;
+                yield return middleRight + i;
+            }
+        }
+
+        public static int FindCenterBox(ReadOnlySpan<Box> fieldSpan, Box value)
+        {
+            foreach (var i in IndexFromCenter(fieldSpan.Length))
+            {
+                if (fieldSpan[i] == value)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public static (int start, int length) FindCenterBlock(this ReadOnlySpan<Box> fieldSpan, Box value)
+        {
+            int start = FindCenterBox(fieldSpan, value);
+            if (start < 0)
+                return (start, 0);
+
+            int end = start;
+            while (++end < fieldSpan.Length && fieldSpan[end] == value);
+            while (--start >= 0 && fieldSpan[start] == value);
+            ++start;
+
+            return (start, end - start);
+        }
+    }
+}

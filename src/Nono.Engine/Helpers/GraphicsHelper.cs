@@ -42,19 +42,19 @@ namespace Nono.Engine.Helpers
 
         public static string Map(Line line)
         {
-            return new string(line.Select(Map).ToArray());
+            return string.Join(null, line.Select(Map));
         }
 
 
-        public static char Map(Box box)
+        public static string Map(Box box)
         {
             switch (box)
             {
-                case Box.Filled: return '#';
-                case Box.CrossedOut: return '_';
+                case Box.Filled: return "██";
+                case Box.Crossed: return "░░";
             }
 
-            return ' ';
+            return "  ";
         }
     }
 }

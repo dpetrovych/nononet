@@ -73,6 +73,16 @@ namespace Nono.Engine
                 yield return _field[GetPosition(i, columnIndex)];
         }
 
+        public FieldLine GetLine(LineIndex index)
+        {
+            switch(index.Orienation) {
+                case Orientation.Row: return new FieldLine(GetRow(index.Position));
+                case Orientation.Column: return new FieldLine(GetColumn(index.Position));
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(index));
+        }
+
         public IEnumerator<Box> GetEnumerator() => ((IEnumerable<Box>)_field).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() =>  GetEnumerator();
