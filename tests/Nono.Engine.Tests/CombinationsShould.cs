@@ -1,10 +1,20 @@
+using System;
 using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Nono.Engine.Tests
 {
     public class CombinationsShould
     {
+        private readonly ITestOutputHelper output;
+
+        public CombinationsShould(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
+
+
         [Theory]
         [InlineData(new uint[] {10}, 12, 3L)]
         [InlineData(new uint[] { 2},  4, 3L)]

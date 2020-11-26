@@ -6,7 +6,7 @@ using Nono.Engine.Helpers;
 
 namespace Nono.Engine
 {
-    public abstract class Line : IReadOnlyList<Box>
+    public abstract class Line : IEnumerable<Box>
     {
         private readonly Box[] _boxes;
 
@@ -21,12 +21,11 @@ namespace Nono.Engine
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public int Count => _boxes.Length;
+        public int Length => _boxes.Length;
 
         public override string ToString() => GraphicsHelper.Map(this);
 
-        public ReadOnlySpan<Box> AsSpan() => new ReadOnlySpan<Box>(_boxes);
-
-        public ReadOnlySpan<Box> Slice(int start, int length) => new ReadOnlySpan<Box>(_boxes, start, length);
+        public static implicit operator ReadOnlySpan<Box>(Line line) 
+            => new ReadOnlySpan<Box>(line._boxes);
     }
 }

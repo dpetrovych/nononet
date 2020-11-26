@@ -6,6 +6,9 @@ namespace Nono.Engine.Helpers
 {
     public static class GraphicsHelper
     {
+        private static readonly Func<Box, string> FieldMap = Map("██", "░░", "  ");
+        private static readonly Func<Box, string> LineMap = Map("—", "x", " ");
+
         public static string Map(Field field)
         {
             var sb = new StringBuilder();
@@ -15,7 +18,7 @@ namespace Nono.Engine.Helpers
 
                 foreach (var cell in row)
                 {
-                    sb.Append(Map(cell));
+                    sb.Append(FieldMap(cell));
                 }
 
                 sb.Append(Environment.NewLine);
@@ -31,7 +34,7 @@ namespace Nono.Engine.Helpers
             {
                 for (int j = 0; j < square.GetLength(1); j++)
                 {
-                    sb.Append(Map(square[i, j]));
+                    sb.Append(FieldMap(square[i, j]));
                 }
 
                 sb.Append(Environment.NewLine);
@@ -42,19 +45,22 @@ namespace Nono.Engine.Helpers
 
         public static string Map(Line line)
         {
-            return string.Join(null, line.Select(Map));
+            return string.Join(null, line.Select(LineMap));
         }
 
 
-        public static string Map(Box box)
+        public static Func<Box, string> Map(string filled, string crossed, string empty)
         {
-            switch (box)
+            return box =>
             {
-                case Box.Filled: return "██";
-                case Box.Crossed: return "░░";
-            }
+                switch (box)
+                {
+                    case Box.Filled: return filled;
+                    case Box.Crossed: return crossed; 
+                }
 
-            return "  ";
+                return empty;
+            };
         }
     }
 }

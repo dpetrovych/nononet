@@ -22,7 +22,8 @@ namespace Nono.Engine.Tests
             var columnHint = new[] { (uint)rowPower };
 
             var solve = new Solver();
-            var result = solve.Run(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
+            var nonogram = new Nonogram(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
+            var result = solve.Solve(nonogram);
 
             result.RowCount.Should().Be(rowPower);
             result.ColumnCount.Should().Be(columnPower);

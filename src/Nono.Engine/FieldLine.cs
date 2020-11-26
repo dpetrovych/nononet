@@ -6,19 +6,22 @@ namespace Nono.Engine
 {
     public sealed class FieldLine : Line
     {
-        public FieldLine(IEnumerable<Box> boxes) : base(boxes)
+        public FieldLine(IEnumerable<Box> boxes, LineIndex index) : base(boxes)
         {
+            Index = index;
         }
+
+        public LineIndex Index { get; }
 
         public DiffLine Diff(Line line)
         {
-            if (line.Count != Count)
+            if (line.Length != Length)
                 throw new ArgumentException("Mismatch in length", nameof(line));
 
             var diffEnumerator = Enumerable.Zip(
                 this, line, (thisBox, otherBox) => thisBox == Box.Empty ? otherBox : thisBox);
 
-            return new DiffLine(diffEnumerator);
+            return new DiffLine(diffEnumerator, Index);
         }
     }
 
@@ -51,18 +54,28 @@ namespace Nono.Engine
             return -1;
         }
 
-        public static (int start, int length) FindCenterBlock(this ReadOnlySpan<Box> fieldSpan, Box value)
+        public static (int start, int end) FindCenterBlock(this ReadOnlySpan<Box> fieldSpan, Box value)
         {
             int start = FindCenterBox(fieldSpan, value);
-            if (start < 0)
-                return (start, 0);
-
             int end = start;
+            if (start < 0)
+                return (start, end);
+            
             while (++end < fieldSpan.Length && fieldSpan[end] == value);
             while (--start >= 0 && fieldSpan[start] == value);
             ++start;
 
-            return (start, end - start);
+            return (start, end);
+        }
+
+        public static bool Any(this ReadOnlySpan<Box> fieldSpan, Box value)
+        {
+            foreach (var box in fieldSpan)
+            {
+                if (box == value) return true;
+            }
+
+            return false;
         }
     }
 }

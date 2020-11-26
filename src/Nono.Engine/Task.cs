@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Nono.Engine.Extensions;
 
 namespace Nono.Engine
 {
@@ -22,16 +18,15 @@ namespace Nono.Engine
 
         public bool IsHotEmpty { get; }
 
+        public long Count { get; private set; }
+
         public Line Collapse(FieldLine fieldLine)
         {
-            return Collapse(this.Cues, fieldLine.AsSpan());
+            return CollapseOperation.Run(this.Cues, fieldLine)
+                ?? throw new Exception("Line is unsolvable");
         }
 
-        private static Line Collapse(uint[] cues, ReadOnlySpan<Box> fieldLine)
-        {
-            return new CollapseLine(Enumerable.Empty<Box>(), 0);
-        }
-
-        public long Count { get; private set; }
+        public override string ToString()
+            => $"{Index}: ({string.Join(", ", Cues)})";
     }
 }

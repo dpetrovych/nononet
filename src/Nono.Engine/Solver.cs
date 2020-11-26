@@ -16,9 +16,10 @@ namespace Nono.Engine
                 var fieldLine = field.GetLine(line.Index);
                 var collapsedLine = line.Collapse(fieldLine);
                 var diffLine = fieldLine.Diff(collapsedLine);
-                hotheap.PushDiff(diffLine, line.Index.Orienation);
-            }
 
+                hotheap.PushDiff(diffLine, line.Index.Orienation);
+                field.Set(diffLine);
+            }
 
             return field;
         }

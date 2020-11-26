@@ -20,6 +20,17 @@ namespace Nono.Engine
 
             throw new ArgumentOutOfRangeException(nameof(orientation));
         }
+
+        public static char Code(this Orientation orientation)
+        {
+            switch (orientation)
+            {
+                case Orientation.Row: return 'R';
+                case Orientation.Column: return 'C';
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(orientation));
+        }
     }
 
     public record LineIndex
@@ -30,5 +41,8 @@ namespace Nono.Engine
 
         public LineIndex(Orientation orienation, int position)
             => (Orienation, Position) = (orienation, position);
+
+        public override string ToString()
+            => $"{Orienation.Code()}{Position}";
     }
 }

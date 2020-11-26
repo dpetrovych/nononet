@@ -8,6 +8,7 @@ namespace Nono.Engine.Tests
     public class FullTests
     {
         private readonly ITestOutputHelper output;
+        private readonly Solver solver = new Solver();
 
         public FullTests(ITestOutputHelper output)
         {
@@ -18,11 +19,11 @@ namespace Nono.Engine.Tests
         [TestFiles]
         public void TestOutput(uint[][] rows, uint[][] columns)
         {
-            var solve = new Solver();
+            var nonogram = new Nonogram(rows, columns);
 
             AssertAsync.CompletesIn(5, () =>
             {
-                var result = solve.Run(rows, columns);
+                var result = solver.Solve(nonogram);
 
                 output.WriteLine(GraphicsHelper.Map(result));
             });            

@@ -2,9 +2,9 @@
 
 namespace Nono.Engine.Extensions
 {
-    public static class SpanExtensions
+    public static class CuesExtensions
     {
-        public static long Sum(this Span<uint> span)
+        public static long Sum(this ReadOnlySpan<uint> span)
         {
             long sum = 0L;
             foreach (var element in span)
@@ -14,7 +14,7 @@ namespace Nono.Engine.Extensions
             return sum;
         }
 
-        public static uint Max(this Span<uint> span)
+        public static uint Max(this ReadOnlySpan<uint> span)
         {
             uint max = span[0];
             for (int i = 1; i < span.Length; i++)
@@ -23,14 +23,6 @@ namespace Nono.Engine.Extensions
                 max = element > max ? element : max;
             }
             return max;
-        }
-
-        public static void Fill<T>(this Span<T> span, Func<int, T> func)
-        {
-            for (var i = 0; i < span.Length; i++)
-            {
-                span[i] = func(i);
-            }
         }
     }
 }

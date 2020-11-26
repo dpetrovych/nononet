@@ -16,18 +16,18 @@ namespace Nono.Engine.Tests
         {
             var indexes = FieldLineExtensions.IndexFromCenter(length).ToArray();
 
-            indexes.Should().BeEquivalentTo(expectedIndexes);
+            indexes.Should().Equal(expectedIndexes);
         }
 
         [Theory]
-        [InlineData("  00   ", 2, 2)]
+        [InlineData("  00   ", 2, 4)]
         [InlineData("0000   ", 0, 4)]
-        [InlineData("   0000", 3, 4)]
+        [InlineData("   0000", 3, 7)]
         [InlineData("0000000", 0, 7)]
-        [InlineData("111111", -1, 0)]
+        [InlineData("111111", -1, -1)]
         public void FindCenterBlock(string line, int expectedStart, int expectedLength)
         {
-            var (start, length) = line.AsFieldLineSpan().FindCenterBlock(Box.Crossed);
+            var (start, length) = line.AsSpan().FindCenterBlock(Box.Crossed);
 
             start.Should().Be(expectedStart);
             length.Should().Be(expectedLength);
