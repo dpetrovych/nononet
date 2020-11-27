@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Nono.Engine.IO;
 using Xunit.Sdk;
 
 namespace Nono.Engine.Tests.Suits
@@ -14,9 +15,9 @@ namespace Nono.Engine.Tests.Suits
             {
                 using (var reader = new NonFileReader(testFile))
                 {
-                    var (rows, columns) = reader.Read();
+                    var nonogram = reader.Read();
 
-                    yield return new object[] { rows, columns };
+                    yield return new object[] { nonogram };
                 }
             }
         }

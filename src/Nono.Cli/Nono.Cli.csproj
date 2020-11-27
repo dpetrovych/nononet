@@ -9,4 +9,9 @@
     <ProjectReference Include="..\Nono.Engine\Nono.Engine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="dotnet-curses" Version="1.0.2" />
+  </ItemGroup>
+
 </Project>

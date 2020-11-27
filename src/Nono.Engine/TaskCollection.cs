@@ -4,38 +4,37 @@ using System.Linq;
 
 namespace Nono.Engine
 {
-    internal class TaskCollection : IEnumerable<Task>
+    public class TaskCollection : IReadOnlyCollection<TaskLine>
     {
-        private readonly IReadOnlyDictionary<Orientation, Task[]> _tasks;
+        private readonly IReadOnlyDictionary<Orientation, TaskLine[]> _tasks;
 
-        private TaskCollection(IReadOnlyDictionary<Orientation, Task[]> tasks)
+        private TaskCollection(IReadOnlyDictionary<Orientation, TaskLine[]> tasks, int count)
         {
             _tasks = tasks;
+            Count = count;
         }
 
-        public Task this[Orientation orienation, int position] => _tasks[orienation][position];
+        public int Count { get; private set; }
+
+        public TaskLine this[Orientation orienation, int position] => _tasks[orienation][position];
 
         public static TaskCollection Create(Nonogram nonogram)
         {
-            var tasks = new Dictionary<Orientation, Task[]>() {
+            var tasks = new Dictionary<Orientation, TaskLine[]>()
+            {
                 [Orientation.Column] = CreateTaskLines(nonogram.Columns, nonogram.Rows.Length, Orientation.Column),
                 [Orientation.Row] = CreateTaskLines(nonogram.Rows, nonogram.Columns.Length, Orientation.Row),
             };
 
-            return new TaskCollection(tasks);
+            return new TaskCollection(tasks, nonogram.Rows.Length + nonogram.Columns.Length);
         }
 
-        private static Task[] CreateTaskLines(uint[][] tasksAxis, int length, Orientation orienation)
-            => tasksAxis.Select((cues, i) => new Task(cues, length, new LineIndex(orienation, i))).ToArray();
+        private static TaskLine[] CreateTaskLines(uint[][] tasksAxis, int length, Orientation orienation)
+            => tasksAxis.Select((cues, i) => new TaskLine(cues, length, new LineIndex(orienation, i))).ToArray();
 
-        public IEnumerator<Task> GetEnumerator()
-        {
-            return _tasks.Values.SelectMany(x => x).GetEnumerator();
-        }
+        public IEnumerator<TaskLine> GetEnumerator()
+            => _tasks.Values.SelectMany(x => x).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

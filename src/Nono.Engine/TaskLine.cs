@@ -2,14 +2,14 @@ using System;
 
 namespace Nono.Engine
 {
-    internal class Task
+    public class TaskLine
     {
-        public Task(uint[] cues, int length, LineIndex index)
+        public TaskLine(uint[] cues, int length, LineIndex index)
         {
             Cues = cues;
             Index = index;
             IsHotEmpty = Combinations.IsHot(cues, length);
-            Count = Combinations.Count(cues, length);
+            CombinationsCount = Combinations.Count(cues, length);
         }
 
         public uint[] Cues { get; }
@@ -18,7 +18,7 @@ namespace Nono.Engine
 
         public bool IsHotEmpty { get; }
 
-        public long Count { get; private set; }
+        public long CombinationsCount { get; private set; }
 
         public Line Collapse(FieldLine fieldLine)
         {

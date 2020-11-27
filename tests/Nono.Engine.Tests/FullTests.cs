@@ -1,4 +1,5 @@
 ﻿using Nono.Engine.Helpers;
+using Nono.Engine.Log;
 using Nono.Engine.Tests.Suits;
 using Xunit;
 using Xunit.Abstractions;
@@ -8,7 +9,7 @@ namespace Nono.Engine.Tests
     public class FullTests
     {
         private readonly ITestOutputHelper output;
-        private readonly Solver solver = new Solver();
+        private readonly Solver solver = new Solver(new NullLog());
 
         public FullTests(ITestOutputHelper output)
         {
@@ -17,15 +18,13 @@ namespace Nono.Engine.Tests
 
         [Theory]
         [TestFiles]
-        public void TestOutput(uint[][] rows, uint[][] columns)
+        public void TestOutput(Nonogram nonogram)
         {
-            var nonogram = new Nonogram(rows, columns);
-
             AssertAsync.CompletesIn(5, () =>
             {
                 var result = solver.Solve(nonogram);
 
-                output.WriteLine(GraphicsHelper.Map(result));
+                output.WriteLine(GraphicsHelper.Map(result.Field));
             });            
         }
     }

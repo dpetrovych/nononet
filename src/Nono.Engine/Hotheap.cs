@@ -6,7 +6,7 @@ namespace Nono.Engine
 {
     internal class Hotheap
     {
-        private HashSet<Task> _heap;
+        private HashSet<TaskLine> _heap;
 
         public TaskCollection _tasks;
 
@@ -16,9 +16,9 @@ namespace Nono.Engine
             _heap = tasks.Where(task => task.IsHotEmpty).ToHashSet();
         }
 
-        public bool TryPop(out Task line)
+        public bool TryPop(out TaskLine line)
         {
-            line = _heap.OrderBy(x => x.Count).FirstOrDefault();
+            line = _heap.OrderBy(x => x.CombinationsCount).FirstOrDefault();
             if (line == null) 
                 return false;
 
@@ -26,9 +26,9 @@ namespace Nono.Engine
             return true;
         }
 
-        public void PushDiff(DiffLine diff, Orientation orienation)
+        public void PushDiff(DiffLine diff)
         {
-            var opposite = orienation.Opposite();
+            var opposite = diff.Index.Orienation.Opposite();
             var oppsiteTasks = diff
                 .NonEmptyIndexes()
                 .Select(i => _tasks[opposite, i]);

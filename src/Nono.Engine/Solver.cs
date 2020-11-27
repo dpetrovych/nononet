@@ -1,27 +1,45 @@
-using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 using System.Linq;
+using Nono.Engine.Log;
 
 namespace Nono.Engine
 {
     public class Solver
     {
-        public Field Solve(Nonogram nonogram)
+        private readonly ILog _log;
+
+        public Solver(ILog log)
         {
+            _log = log;
+        }
+
+        public Solution Solve(Nonogram nonogram)
+        {
+            var start = Stopwatch.GetTimestamp();
             var field = new Field(nonogram.Rows.Length, nonogram.Columns.Length);
-            var tasks = TaskCollection.Create(nonogram);
+
+            var tasks = _log.InitTasks(() => TaskCollection.Create(nonogram));
+
             var hotheap = new Hotheap(tasks);
 
             while (hotheap.TryPop(out var line))
             {
                 var fieldLine = field.GetLine(line.Index);
-                var collapsedLine = line.Collapse(fieldLine);
-                var diffLine = fieldLine.Diff(collapsedLine);
+                var diffLine = _log.Collapse(
+                    line, fieldLine, 
+                    (line, fieldLine) => {
+                        var collapsedLine = line.Collapse(fieldLine);
+                        return fieldLine.Diff(collapsedLine);
+                    });
 
-                hotheap.PushDiff(diffLine, line.Index.Orienation);
+                hotheap.PushDiff(diffLine);
                 field.Set(diffLine);
             }
 
-            return field;
+            var runTime = Performance.Measure(start);
+
+            return new Solution(field, runTime);
         }
     }
 }

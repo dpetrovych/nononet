@@ -78,8 +78,10 @@ namespace Nono.Engine
 
             switch (index.Orienation)
             {
-                case Orientation.Row: return new FieldLine(GetRow(index.Position), index);
-                case Orientation.Column: return new FieldLine(GetColumn(index.Position), index);
+                case Orientation.Row:
+                    return new FieldLine(GetRow(index.Position), index);
+                case Orientation.Column:
+                    return new FieldLine(GetColumn(index.Position), index);
             }
 
             throw new ArgumentOutOfRangeException(nameof(index));
@@ -89,8 +91,10 @@ namespace Nono.Engine
         {
             switch (index.Orienation)
             {
-                case Orientation.Row: return GetRowIndexer(index.Position);
-                case Orientation.Column: return GetColumnIndexer(index.Position);
+                case Orientation.Row:
+                    return GetRowIndexer(index.Position);
+                case Orientation.Column:
+                    return GetColumnIndexer(index.Position);
             }
 
             throw new ArgumentOutOfRangeException(nameof(index));
@@ -100,14 +104,14 @@ namespace Nono.Engine
         {
             var fieldIndexer = GetLineIndexer(line.Index);
             foreach (var i in line.NonEmptyIndexes())
-            {
                 _field[fieldIndexer(i)] = line[i];
-            }
         }
 
-        public IEnumerator<Box> GetEnumerator() => ((IEnumerable<Box>)_field).GetEnumerator();
+        public IEnumerator<Box> GetEnumerator()
+            => ((IEnumerable<Box>)_field).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
 
         public override string ToString() => GraphicsHelper.Map(this);
     }
