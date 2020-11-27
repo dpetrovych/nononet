@@ -1,6 +1,6 @@
 using System.Linq;
 using FluentAssertions;
-using Nono.Engine.Log;
+using Nono.Engine.Logging;
 using Xunit;
 
 namespace Nono.Engine.Tests

@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
 using Nono.Engine;
-using Nono.Engine.Log;
+using Nono.Engine.Logging;
 
-using static Nono.Engine.Log.Performance;
+using static Nono.Engine.Logging.Performance;
 
-namespace Nono.Cli.Log
+namespace Nono.Cli
 {
     public class ConsoleLog : ILog
     {

@@ -1,5 +1,5 @@
 using System.Linq;
-using Nono.Engine.Log;
+using Nono.Engine.Logging;
 
 namespace Nono.Engine
 {
@@ -15,7 +15,7 @@ namespace Nono.Engine
         public Field Field { get; }
 
         public Performance Time { get; }
-        
+
         public bool IsSolved { get; }
     }
 }

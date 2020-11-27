@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using Nono.Engine.Log;
+using Nono.Engine.Logging;
 
 namespace Nono.Engine
 {

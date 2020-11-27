@@ -3,10 +3,9 @@ using System.IO;
 
 using CommandLine;
 
-using Nono.Cli.Log;
 using Nono.Engine;
 using Nono.Engine.IO;
-using Nono.Engine.Log;
+using Nono.Engine.Logging;
 
 namespace Nono.Cli
 {
@@ -63,23 +62,12 @@ namespace Nono.Cli
 
         }
 
-        private static ILog GetLogger(Options options) 
+        private static ILog GetLogger(Options options)
         {
-            if (options.Verbose) 
+            if (options.Verbose)
                 return new ConsoleLog();
 
             return new NullLog();
         }
-
-        // static void OutputBox(Box[,] image)
-        // {
-        //     for (int i = 0; i < image.GetLength(0); i++)
-        //     {
-        //         for (int j = 0; j < image.GetLength(1); j++)
-        //         {
-        //             Console.Write(image[i, j]);
-        //         }
-        //     }
-        // }
     }
 }

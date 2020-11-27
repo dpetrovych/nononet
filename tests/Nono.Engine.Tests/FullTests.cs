@@ -1,5 +1,5 @@
 ﻿using Nono.Engine.Helpers;
-using Nono.Engine.Log;
+using Nono.Engine.Logging;
 using Nono.Engine.Tests.Suits;
 using Xunit;
 using Xunit.Abstractions;
