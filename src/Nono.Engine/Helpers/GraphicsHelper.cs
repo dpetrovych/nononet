@@ -6,7 +6,7 @@ namespace Nono.Engine.Helpers
     public static class GraphicsHelper
     {
         private static readonly Func<Box, string> FieldMap = Map("██", "░░", "  ");
-        private static readonly Func<Box, string> LineMap = Map("—", "x", " ");
+        private static readonly Func<Box, string> LineMap = Map("1", "x", " ");
 
         public static string Map(Field field)
         {

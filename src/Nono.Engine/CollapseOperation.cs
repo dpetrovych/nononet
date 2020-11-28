@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Nono.Engine.Extensions;
@@ -54,8 +52,6 @@ namespace Nono.Engine
             for (int cueIndex = 0; cueIndex < cues.Length; cueIndex++)
             {
                 var cue = (int)cues[cueIndex];
-                if (cue < end - start)  // TODO: check if condition is covered by for loop
-                    continue;
 
                 for (int pos = end - cue; pos <= start; pos++)
                 {
@@ -107,6 +103,8 @@ namespace Nono.Engine
                     cursor += MIN_BLOCK_SPACE;
                     for (int i = 0; i < cue; i++)
                         line[cursor + i] = Box.Filled;
+
+                    cursor += (int)cue;
                 }
 
                 return new CollapseLine(line.Skip(MIN_BLOCK_SPACE), 1);
@@ -142,19 +140,13 @@ namespace Nono.Engine
                     cursor += MIN_BLOCK_SPACE;
                 }
 
-                for(;cursor < fieldLine.Length; cursor++)
+                for (; cursor < fieldLine.Length; cursor++)
                 {
                     line[cursor] = Box.Empty;
                 }
 
                 return new CollapseLine(line, combinationsCount);
             }
-
-            // mvsp 2: 3/5    |  x  |
-            // mvsp 2: 1 2 3 / 10 |x xx xxx  |
-            //                    |  x xx xxx|
-            //                    |       x  |
-            // mvsp 1: 2 2 / | x x |
         }
 
         private static (CollapseLine? left, CollapseLine? right) PrioritizedRun(

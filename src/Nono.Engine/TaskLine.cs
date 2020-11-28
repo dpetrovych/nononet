@@ -22,8 +22,10 @@ namespace Nono.Engine
 
         public Line Collapse(FieldLine fieldLine)
         {
-            return CollapseOperation.Run(this.Cues, fieldLine)
+            var result = CollapseOperation.Run(this.Cues, fieldLine)
                 ?? throw new Exception("Line is unsolvable");
+            CombinationsCount = result.CombinationsCount;
+            return result;
         }
 
         public override string ToString()

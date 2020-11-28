@@ -10,7 +10,7 @@ namespace Nono.Cli
 {
     public class ConsoleLog : ILog
     {
-        public Field InitField(Func<Field> action) 
+        public Field InitField(Func<Field> action)
         {
             WriteLine($"init field");
             var field = action();
@@ -26,21 +26,21 @@ namespace Nono.Cli
 
             var result = action();
 
-            var measure = Performance.Measure(start);
-            WriteLine($"          end   count={result.Count} elapsed= {measure}");
+            var measure = Measure(start);
+            WriteLine($"           end   count={result.Count} time= {measure}");
 
             return result;
         }
 
-        public DiffLine Collapse(TaskLine task, FieldLine line, Func<TaskLine, FieldLine, DiffLine> action) 
+        public DiffLine Collapse(TaskLine task, FieldLine line, Func<TaskLine, FieldLine, DiffLine> action)
         {
-            WriteLine($"collapse  start {task.Index:-5} line={line} taks=({string.Join(',', task.Cues)}) count= {task.CombinationsCount}");
+            WriteLine($"collapse  start {task.Index,-5} line={line} cues=[{string.Join(", ", task.Cues)}] count= {task.CombinationsCount}");
             long start = GetTimestamp();
 
             var result = action(task, line);
 
-            var measure = Performance.Measure(start);
-            WriteLine($"          end   {result.Index:-5} diff={result} elapsed= {measure}");
+            var measure = Measure(start);
+            WriteLine($"          end   {result.Index,-5} diff={result} time= {measure}");
 
             return result;
         }
