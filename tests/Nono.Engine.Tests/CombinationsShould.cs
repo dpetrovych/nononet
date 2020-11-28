@@ -36,5 +36,14 @@ namespace Nono.Engine.Tests
 
             count.Should().Be(expectedCount);
         }
+
+        [Theory]
+        [InlineData(new uint[] {6, 2, 16, 1}, 35, 330L)]
+        public void CountComplex(uint[] task, int length, long expectedCount)
+        {
+            var count = Combinations.Count(task, length);
+
+            count.Should().Be(expectedCount);
+        }
     }
 }

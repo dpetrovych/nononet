@@ -81,7 +81,18 @@ namespace Nono.Engine.Tests
                 "             x                    — —  ——                                  ".AsSpan());
 
             line.Should().Equal("             x                    — —  ——                                  ".AsBoxEnumerable());
-            line.CombinationsCount.Should().Be(198185796L);
+            line.CombinationsCount.Should().Be(177581035L);
+        }
+
+        [Fact]
+        public void Run_6_blocks_count()
+        {
+            var line = CollapseOperation.Run(
+                new[] { 6u, 2u, 16u, 1u },
+                "                          —        ".AsSpan());
+
+            line.Should().Equal("                 ——————————        ".AsBoxEnumerable());
+            line.CombinationsCount.Should().Be(330L);
         }
     }
 }

@@ -25,8 +25,8 @@ namespace Nono.Engine
         {
             switch (orientation)
             {
-                case Orientation.Row: return 'R';
-                case Orientation.Column: return 'C';
+                case Orientation.Row: return 'r';
+                case Orientation.Column: return 'c';
             }
 
             throw new ArgumentOutOfRangeException(nameof(orientation));

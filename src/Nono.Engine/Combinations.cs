@@ -26,13 +26,14 @@ namespace Nono.Engine
 
                 int leftN = arg.n >> 1;
                 int rightN = arg.n - leftN;
-                int minL = leftN << 1 - 1;
-                int minR = rightN << 1 - 1;
+                int minL = (leftN << 1) - 1;
+                int minR = (rightN << 1) - 1;
 
                 int moves = arg.length - minR - minL;
+                int maxR = minR + moves - 1;
 
                 var leftCounts = Enumerable.Range(minL, moves).Select(x => CountZippedBlocks(leftN, x));
-                var rightCounts = Enumerable.Range(minR, moves).Select(x => CountZippedBlocks(rightN, x));
+                var rightCounts = Enumerable.Range(-maxR, moves).Select(x => CountZippedBlocks(rightN, -x));
 
                 return Enumerable.Zip(Derivative(leftCounts), rightCounts, (dleft, right) => dleft * right).Sum();
             }
