@@ -2,7 +2,7 @@ using System;
 
 namespace Nono.Engine
 {
-    public enum Orientation
+    public enum Orientation : byte
     {
         Row = 0,
         Column = 1,
@@ -37,9 +37,9 @@ namespace Nono.Engine
     {
         public Orientation Orienation { get; }
 
-        public int Position { get; }
+        public ushort Position { get; }
 
-        public LineIndex(Orientation orienation, int position)
+        public LineIndex(Orientation orienation, ushort position)
             => (Orienation, Position) = (orienation, position);
 
         public override string ToString()

@@ -10,7 +10,7 @@ namespace Nono.Engine
     {
         private readonly Box[] _field;
 
-        public Field(int rowCount, int columnCount)
+        public Field(ushort rowCount, ushort columnCount)
         {
             if (rowCount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(rowCount));
@@ -19,26 +19,23 @@ namespace Nono.Engine
                 throw new ArgumentOutOfRangeException(nameof(columnCount));
 
             RowCount = rowCount;
-            ColumnCount = columnCount;
-
-            _field = new Box[rowCount * columnCount];
+            RowSize = ColumnCount = columnCount;
+            
+            _field = (Box[])Array.CreateInstance(typeof(Box), unchecked(RowCount * RowSize));
             Array.Fill(_field, Box.Empty);
         }
 
-        public int RowCount { get; }
+        public ushort RowCount { get; }
 
-        public int ColumnCount { get; }
+        public ushort ColumnCount { get; }
+
+        private long RowSize { get; }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int GetPosition(int rowIndex, int columnIndex)
-        {
-            unchecked
-            {
-                return rowIndex * ColumnCount + columnIndex;
-            }
-        }
+        private long GetPosition(ushort rowIndex, ushort columnIndex)
+            => unchecked(rowIndex * RowSize + columnIndex);
 
-        private Func<int, int> GetRowIndexer(int rowIndex)
+        private Func<ushort, long> GetRowIndexer(ushort rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
@@ -46,7 +43,7 @@ namespace Nono.Engine
             return columnIndex => GetPosition(rowIndex, columnIndex);
         }
 
-        private Func<int, int> GetColumnIndexer(int columnIndex)
+        private Func<ushort, long> GetColumnIndexer(ushort columnIndex)
         {
             if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
@@ -54,21 +51,21 @@ namespace Nono.Engine
             return rowIndex => GetPosition(rowIndex, columnIndex);
         }
 
-        public IEnumerable<Box> GetRow(int rowIndex)
+        public IEnumerable<Box> GetRow(ushort rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
 
-            for (int i = 0; i < ColumnCount; i++)
+            for (ushort i = 0; i < ColumnCount; i++)
                 yield return _field[GetPosition(rowIndex, i)];
         }
 
-        public IEnumerable<Box> GetColumn(int columnIndex)
+        public IEnumerable<Box> GetColumn(ushort columnIndex)
         {
             if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
-            for (int i = 0; i < RowCount; i++)
+            for (ushort i = 0; i < RowCount; i++)
                 yield return _field[GetPosition(i, columnIndex)];
         }
 
@@ -87,7 +84,7 @@ namespace Nono.Engine
             throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        public Func<int, int> GetLineIndexer(LineIndex index)
+        public Func<ushort, long> GetLineIndexer(LineIndex index)
         {
             switch (index.Orienation)
             {
@@ -104,7 +101,7 @@ namespace Nono.Engine
         {
             var fieldIndexer = GetLineIndexer(line.Index);
             foreach (var i in line.NonEmptyIndexes())
-                _field[fieldIndexer(i)] = line[i];
+                _field.SetValue(line[i], fieldIndexer(i));
         }
 
         public IEnumerator<Box> GetEnumerator()

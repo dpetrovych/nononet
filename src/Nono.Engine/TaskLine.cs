@@ -4,7 +4,7 @@ namespace Nono.Engine
 {
     public class TaskLine
     {
-        public TaskLine(uint[] cues, int length, LineIndex index)
+        public TaskLine(ushort[] cues, int length, LineIndex index)
         {
             Cues = cues;
             Index = index;
@@ -12,7 +12,7 @@ namespace Nono.Engine
             CombinationsCount = Combinations.Count(cues, length);
         }
 
-        public uint[] Cues { get; }
+        public ushort[] Cues { get; }
 
         public LineIndex Index { get; }
 

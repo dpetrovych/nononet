@@ -16,7 +16,7 @@ namespace Nono.Engine.Helpers
             sb.Append('┐');
             sb.AppendLine();
 
-            for (int i = 0; i < field.RowCount; i++)
+            for (ushort i = 0; i < field.RowCount; i++)
             {
                 sb.Append('|');
                 var row = field.GetRow(i);

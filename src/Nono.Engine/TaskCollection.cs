@@ -22,15 +22,18 @@ namespace Nono.Engine
         {
             var tasks = new Dictionary<Orientation, TaskLine[]>()
             {
-                [Orientation.Column] = CreateTaskLines(nonogram.Columns, nonogram.Rows.Length, Orientation.Column),
-                [Orientation.Row] = CreateTaskLines(nonogram.Rows, nonogram.Columns.Length, Orientation.Row),
+                [Orientation.Column] = CreateTaskLines(nonogram.Columns, nonogram.RowsCount, Orientation.Column).ToArray(),
+                [Orientation.Row] = CreateTaskLines(nonogram.Rows, nonogram.ColumnsCount, Orientation.Row).ToArray(),
             };
 
             return new TaskCollection(tasks, nonogram.Rows.Length + nonogram.Columns.Length);
         }
 
-        private static TaskLine[] CreateTaskLines(uint[][] tasksAxis, int length, Orientation orienation)
-            => tasksAxis.Select((cues, i) => new TaskLine(cues, length, new LineIndex(orienation, i))).ToArray();
+        private static IEnumerable<TaskLine> CreateTaskLines(ushort[][] tasksAxis, ushort length, Orientation orienation)
+        {
+            for (ushort i = 0; i < tasksAxis.Length; i++)
+                yield return new TaskLine(tasksAxis[i], length, new LineIndex(orienation, i));
+        }
 
         public IEnumerator<TaskLine> GetEnumerator()
             => _tasks.Values.SelectMany(x => x).GetEnumerator();

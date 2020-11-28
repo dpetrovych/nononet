@@ -5,7 +5,7 @@ using Nono.Engine.Extensions;
 using static Nono.Engine.Constraints;
 
 using SBox = System.ReadOnlySpan<Nono.Engine.Box>;
-using SCues = System.ReadOnlySpan<uint>;
+using SCues = System.ReadOnlySpan<ushort>;
 
 namespace Nono.Engine
 {
@@ -51,8 +51,7 @@ namespace Nono.Engine
             CollapseLine? result = null;
             for (int cueIndex = 0; cueIndex < cues.Length; cueIndex++)
             {
-                var cue = (int)cues[cueIndex];
-
+                var cue = cues[cueIndex];
                 for (int pos = end - cue; pos <= start; pos++)
                 {
                     var posEnd = pos + cue;
@@ -104,7 +103,7 @@ namespace Nono.Engine
                     for (int i = 0; i < cue; i++)
                         line[cursor + i] = Box.Filled;
 
-                    cursor += (int)cue;
+                    cursor += cue;
                 }
 
                 return new CollapseLine(line.Skip(MIN_BLOCK_SPACE), 1);
@@ -131,7 +130,7 @@ namespace Nono.Engine
                         line[cursor + i] = Box.Filled;
                     }
 
-                    cursor += (int)(cue - moveSpace);
+                    cursor += (cue - moveSpace);
 
                     for (var i = 0; i < MIN_BLOCK_SPACE; i++)
                     {

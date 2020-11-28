@@ -13,15 +13,16 @@ namespace Nono.Engine
         public Line(IEnumerable<Box> boxes)
         {
             _boxes = boxes.ToArray();
+            Length = (ushort)_boxes.Length;
         }
+
+        public ushort Length { get; }
 
         public Box this[int i] => _boxes[i];
 
         public IEnumerator<Box> GetEnumerator() => ((IEnumerable<Box>)_boxes).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public int Length => _boxes.Length;
 
         public override string ToString() => GraphicsHelper.Map(this);
 
