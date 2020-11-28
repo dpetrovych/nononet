@@ -1,60 +1,63 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace Nono.Engine.Helpers
 {
     public static class GraphicsHelper
     {
+        private static readonly Func<Box, string> FieldMap = Map("██", "░░", "  ");
+        private static readonly Func<Box, string> LineMap = Map("1", "x", " ");
+
         public static string Map(Field field)
         {
-            var sb = new StringBuilder();
+            var sb = new StringBuilder((field.ColumnCount * 2 + 4) * (field.RowCount + 2));
+            sb.Append('┌');
+            sb.Append('─', 2 * field.ColumnCount);
+            sb.Append('┐');
+            sb.AppendLine();
+
             for (int i = 0; i < field.RowCount; i++)
             {
+                sb.Append('|');
                 var row = field.GetRow(i);
-
                 foreach (var cell in row)
-                {
-                    sb.Append(Map(cell));
-                }
+                    sb.Append(FieldMap(cell));
 
-                sb.Append(Environment.NewLine);
+                sb.Append('|');
+                sb.AppendLine();
             }
 
-            return sb.ToString();
-        }
-
-        public static string Map(Box[,] square)
-        {
-            var sb = new StringBuilder();
-            for (int i = 0; i < square.GetLength(0); i++)
-            {
-                for (int j = 0; j < square.GetLength(1); j++)
-                {
-                    sb.Append(Map(square[i, j]));
-                }
-
-                sb.Append(Environment.NewLine);
-            }
+            sb.Append('└');
+            sb.Append('─', 2 * field.ColumnCount);
+            sb.Append('┘');
 
             return sb.ToString();
         }
 
         public static string Map(Line line)
         {
-            return new string(line.Select(Map).ToArray());
+            var sb = new StringBuilder(line.Length + 2);
+            sb.Append('|');
+            foreach (var cell in line)
+                sb.Append(LineMap(cell));
+            
+            sb.Append('|');
+            return sb.ToString();
         }
 
 
-        public static char Map(Box box)
+        public static Func<Box, string> Map(string filled, string crossed, string empty)
         {
-            switch (box)
+            return box =>
             {
-                case Box.Filled: return '#';
-                case Box.CrossedOut: return '_';
-            }
+                switch (box)
+                {
+                    case Box.Filled: return filled;
+                    case Box.Crossed: return crossed; 
+                }
 
-            return ' ';
+                return empty;
+            };
         }
     }
 }

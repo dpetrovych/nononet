@@ -2,12 +2,12 @@
 {
     public enum Box : byte
     {
-        O = 0,
-        X = 1,
-        _ = 2,
+        _ = 255,
+        X = 0,
+        O = 1,
 
-        Empty = 0,
-        CrossedOut = 1,
-        Filled = 2
+        Empty = 255,
+        Crossed = 0,
+        Filled = 1
     }
 }

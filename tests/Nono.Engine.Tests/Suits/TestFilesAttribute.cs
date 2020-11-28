@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Nono.Engine.IO;
 using Xunit.Sdk;
 
 namespace Nono.Engine.Tests.Suits
@@ -10,13 +11,13 @@ namespace Nono.Engine.Tests.Suits
         {
             var testFiles = TestResources.GetAllFiles();
 
-            foreach (var testFile in testFiles)
+            foreach (var (name, testFile) in testFiles)
             {
-                using (var reader = new NonFileReader(testFile))
+                using (var reader = new NonFileReader(name, testFile))
                 {
-                    var (rows, columns) = reader.Read();
+                    var nonogram = reader.Read();
 
-                    yield return new object[] { rows, columns };
+                    yield return new object[] { nonogram };
                 }
             }
         }

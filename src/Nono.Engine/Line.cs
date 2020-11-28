@@ -1,16 +1,18 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Nono.Engine.Helpers;
 
 namespace Nono.Engine
 {
-    public struct Line : IReadOnlyList<Box>
+    public abstract class Line : IEnumerable<Box>
     {
         private readonly Box[] _boxes;
 
-        public Line(Box[] boxes)
+        public Line(IEnumerable<Box> boxes)
         {
-            _boxes = boxes;
+            _boxes = boxes.ToArray();
         }
 
         public Box this[int i] => _boxes[i];
@@ -19,10 +21,11 @@ namespace Nono.Engine
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public int Count => _boxes.Length;
+        public int Length => _boxes.Length;
 
         public override string ToString() => GraphicsHelper.Map(this);
 
-        public Box[] ToBoxArray() => (Box[]) _boxes.Clone();
+        public static implicit operator ReadOnlySpan<Box>(Line line) 
+            => new ReadOnlySpan<Box>(line._boxes);
     }
 }

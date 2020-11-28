@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
+using Nono.Engine.Helpers;
 
 namespace Nono.Engine
 {
@@ -22,6 +22,7 @@ namespace Nono.Engine
             ColumnCount = columnCount;
 
             _field = new Box[rowCount * columnCount];
+            Array.Fill(_field, Box.Empty);
         }
 
         public int RowCount { get; }
@@ -37,22 +38,20 @@ namespace Nono.Engine
             }
         }
 
-        public IEnumerable<Cell> GetRowEnumerator(int rowIndex)
+        private Func<int, int> GetRowIndexer(int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
-            
-            for (int i = 0; i < ColumnCount; i++)
-                yield return new Cell(_field, GetPosition(rowIndex, i), i);
+
+            return columnIndex => GetPosition(rowIndex, columnIndex);
         }
 
-        public IEnumerable<Cell> GetColumnEnumerator(int columnIndex)
+        private Func<int, int> GetColumnIndexer(int columnIndex)
         {
             if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
-            for (int i = 0; i < RowCount; i++)
-                yield return new Cell(_field, GetPosition(i, columnIndex), i);
+            return rowIndex => GetPosition(rowIndex, columnIndex);
         }
 
         public IEnumerable<Box> GetRow(int rowIndex)
@@ -73,33 +72,47 @@ namespace Nono.Engine
                 yield return _field[GetPosition(i, columnIndex)];
         }
 
-        public IEnumerator<Box> GetEnumerator() => ((IEnumerable<Box>)_field).GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() =>  GetEnumerator();
-    }
-    
-    public struct Cell
-    {
-        private readonly Box[] _field;
-        private readonly int _position;
-
-        public Cell(Box[] field, int position, int index)
+        public FieldLine GetLine(LineIndex index)
         {
-            _field = field;
-            _position = position;
-            Index = index;
+            var indexer = GetLineIndexer(index);
+
+            switch (index.Orienation)
+            {
+                case Orientation.Row:
+                    return new FieldLine(GetRow(index.Position), index);
+                case Orientation.Column:
+                    return new FieldLine(GetColumn(index.Position), index);
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        public int Index { get; }
-
-        public static implicit operator Box(Cell cell)
+        public Func<int, int> GetLineIndexer(LineIndex index)
         {
-            return cell._field[cell._position];
+            switch (index.Orienation)
+            {
+                case Orientation.Row:
+                    return GetRowIndexer(index.Position);
+                case Orientation.Column:
+                    return GetColumnIndexer(index.Position);
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        public void Set(Box value)
+        public void Set(DiffLine line)
         {
-            _field[_position] = value;
+            var fieldIndexer = GetLineIndexer(line.Index);
+            foreach (var i in line.NonEmptyIndexes())
+                _field[fieldIndexer(i)] = line[i];
         }
+
+        public IEnumerator<Box> GetEnumerator()
+            => ((IEnumerable<Box>)_field).GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
+
+        public override string ToString() => GraphicsHelper.Map(this);
     }
 }

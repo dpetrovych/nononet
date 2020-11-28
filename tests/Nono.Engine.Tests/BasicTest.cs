@@ -1,7 +1,6 @@
-using System;
 using System.Linq;
 using FluentAssertions;
-using Nono.Engine.Tests.Extensions;
+using Nono.Engine.Logging;
 using Xunit;
 
 namespace Nono.Engine.Tests
@@ -21,12 +20,13 @@ namespace Nono.Engine.Tests
             var rowHint = new[] { (uint)columnPower };
             var columnHint = new[] { (uint)rowPower };
 
-            var solve = new Solver();
-            var result = solve.Run(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
+            var solve = new Solver(new NullLog());
+            var nonogram = new Nonogram(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));
+            var result = solve.Solve(nonogram);
 
-            result.RowCount.Should().Be(rowPower);
-            result.ColumnCount.Should().Be(columnPower);
-            result.All(x => x == Box.Filled).Should().BeTrue();
+            result.Field.RowCount.Should().Be(rowPower);
+            result.Field.ColumnCount.Should().Be(columnPower);
+            result.Field.All(x => x == Box.Filled).Should().BeTrue();
         }
     }
 }
