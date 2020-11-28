@@ -10,6 +10,11 @@ namespace Nono.Engine.IO
         private Stream? _stream;
         private bool disposedValue = false;
 
+        public NonFileReader(FileStream stream)
+            : this(stream.Name, stream)
+        {
+        }
+
         public NonFileReader(string name, Stream stream)
         {
             _name = name;
