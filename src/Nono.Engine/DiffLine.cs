@@ -11,9 +11,9 @@ namespace Nono.Engine
 
         public LineIndex Index { get; }
 
-        public IEnumerable<ushort> NonEmptyIndexes()
+        public IEnumerable<int> NonEmptyIndexes()
         {
-            for (ushort i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (this[i] != Box.Empty)
                     yield return i;

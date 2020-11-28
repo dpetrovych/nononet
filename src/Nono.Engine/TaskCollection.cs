@@ -29,9 +29,9 @@ namespace Nono.Engine
             return new TaskCollection(tasks, nonogram.Rows.Length + nonogram.Columns.Length);
         }
 
-        private static IEnumerable<TaskLine> CreateTaskLines(ushort[][] tasksAxis, ushort length, Orientation orienation)
+        private static IEnumerable<TaskLine> CreateTaskLines(int[][] tasksAxis, int length, Orientation orienation)
         {
-            for (ushort i = 0; i < tasksAxis.Length; i++)
+            for (int i = 0; i < tasksAxis.Length; i++)
                 yield return new TaskLine(tasksAxis[i], length, new LineIndex(orienation, i));
         }
 

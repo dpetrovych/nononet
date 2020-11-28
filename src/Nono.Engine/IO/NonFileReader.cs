@@ -28,11 +28,11 @@ namespace Nono.Engine.IO
 
             _stream.Position = 0;
 
-            ushort height = 0;
-            ushort width = 0;
+            int height = 0;
+            int width = 0;
 
-            ushort[][]? rows = null;
-            ushort[][]? columns = null;
+            int[][]? rows = null;
+            int[][]? columns = null;
 
             using (var reader = new StreamReader(_stream))
             {
@@ -48,11 +48,11 @@ namespace Nono.Engine.IO
                     switch (splits.FirstOrDefault())
                     {
                         case "width":
-                            width = ushort.Parse(splits[1]);
+                            width = int.Parse(splits[1]);
                             break;
 
                         case "height":
-                            height = ushort.Parse(splits[1]);
+                            height = int.Parse(splits[1]);
                             break;
 
                         case "columns":
@@ -72,13 +72,13 @@ namespace Nono.Engine.IO
             }
         }
 
-        private ushort[][] ReadNumberHints(StreamReader reader, ushort height)
+        private int[][] ReadNumberHints(StreamReader reader, int height)
         {
-            var list = new ushort[height][];
+            var list = new int[height][];
             for (var i = 0; i < height; i++)
             {
                 var line = reader.ReadLine();
-                list[i] = line.Split(",").Select(x => ushort.Parse(x)).ToArray();
+                list[i] = line.Split(",").Select(x => int.Parse(x)).ToArray();
             }
 
             return list;

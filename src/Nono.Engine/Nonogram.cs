@@ -6,7 +6,7 @@ namespace Nono.Engine
 {
     public class Nonogram
     {
-        public Nonogram(IEnumerable<ushort[]> rows, IEnumerable<ushort[]> columns, string? title = null)
+        public Nonogram(IEnumerable<int[]> rows, IEnumerable<int[]> columns, string? title = null)
         {
             Rows = rows.ToArray();
             Columns = columns.ToArray();
@@ -26,13 +26,13 @@ namespace Nono.Engine
 
         public string? Title { get; }
 
-        public ushort[][] Rows { get; }
+        public int[][] Rows { get; }
 
-        public ushort[][] Columns { get; }
+        public int[][] Columns { get; }
 
-        public ushort RowsCount { get; }
+        public int RowsCount { get; }
 
-        public ushort ColumnsCount { get; }
+        public int ColumnsCount { get; }
 
         public override string ToString()
             => Title ?? base.ToString();

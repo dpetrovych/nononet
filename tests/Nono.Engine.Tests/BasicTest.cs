@@ -14,11 +14,11 @@ namespace Nono.Engine.Tests
         [InlineData(3, 3)]
         [InlineData(3, 2)]
         [InlineData(2, 3)]
-        public void BulkFill_Rectangle(ushort rowPower, ushort columnPower)
+        public void BulkFill_Rectangle(int rowPower, int columnPower)
         {
             // Arrange
-            var rowHint = new ushort[] { columnPower };
-            var columnHint = new ushort[] { rowPower };
+            var rowHint = new [] { columnPower };
+            var columnHint = new [] { rowPower };
 
             var solve = new Solver(new NullLog());
             var nonogram = new Nonogram(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));

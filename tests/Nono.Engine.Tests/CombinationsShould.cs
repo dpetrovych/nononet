@@ -16,10 +16,10 @@ namespace Nono.Engine.Tests
 
 
         [Theory]
-        [InlineData(new ushort[] {10}, 12, 3L)]
-        [InlineData(new ushort[] { 2},  4, 3L)]
-        [InlineData(new ushort[] { 1},  3, 3L)]
-        public void OneBlockCount(ushort[] task, int length, long expectedCount)
+        [InlineData(new[] { 10 }, 12, 3L)]
+        [InlineData(new[] { 2 }, 4, 3L)]
+        [InlineData(new[] { 1 }, 3, 3L)]
+        public void OneBlockCount(int[] task, int length, long expectedCount)
         {
             var count = Combinations.Count(task, length);
 
@@ -27,10 +27,10 @@ namespace Nono.Engine.Tests
         }
 
         [Theory]
-        [InlineData(new ushort[] {2, 2}, 6, 3L)]
-        [InlineData(new ushort[] {2, 1}, 5, 3L)]
-        [InlineData(new ushort[] {1, 1}, 4, 3L)]
-        public void TwoBlocksCount(ushort[] task, int length, long expectedCount)
+        [InlineData(new[] { 2, 2 }, 6, 3L)]
+        [InlineData(new[] { 2, 1 }, 5, 3L)]
+        [InlineData(new[] { 1, 1 }, 4, 3L)]
+        public void TwoBlocksCount(int[] task, int length, long expectedCount)
         {
             var count = Combinations.Count(task, length);
 
@@ -38,8 +38,8 @@ namespace Nono.Engine.Tests
         }
 
         [Theory]
-        [InlineData(new ushort[] {6, 2, 16, 1}, 35, 330L)]
-        public void CountComplex(ushort[] task, int length, long expectedCount)
+        [InlineData(new[] { 6, 2, 16, 1 }, 35, 330L)]
+        public void CountComplex(int[] task, int length, long expectedCount)
         {
             var count = Combinations.Count(task, length);
 

@@ -13,11 +13,9 @@ namespace Nono.Engine
         public Line(IEnumerable<Box> boxes)
         {
             _boxes = boxes.ToArray();
-            Length = (ushort)_boxes.Length;
         }
 
-        public ushort Length { get; }
-
+        public int Length => _boxes.Length;
         public Box this[int i] => _boxes[i];
 
         public IEnumerator<Box> GetEnumerator() => ((IEnumerable<Box>)_boxes).GetEnumerator();

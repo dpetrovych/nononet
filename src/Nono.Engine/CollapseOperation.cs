@@ -5,7 +5,7 @@ using Nono.Engine.Extensions;
 using static Nono.Engine.Constraints;
 
 using SBox = System.ReadOnlySpan<Nono.Engine.Box>;
-using SCues = System.ReadOnlySpan<ushort>;
+using SCues = System.ReadOnlySpan<int>;
 
 namespace Nono.Engine
 {

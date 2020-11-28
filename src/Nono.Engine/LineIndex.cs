@@ -37,9 +37,9 @@ namespace Nono.Engine
     {
         public Orientation Orienation { get; }
 
-        public ushort Position { get; }
+        public int Position { get; }
 
-        public LineIndex(Orientation orienation, ushort position)
+        public LineIndex(Orientation orienation, int position)
             => (Orienation, Position) = (orienation, position);
 
         public override string ToString()
