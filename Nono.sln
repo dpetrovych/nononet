@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono.Benchmark", "src\Nono.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono.Engine", "src\Nono.Engine\Nono.Engine.csproj", "{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono.Engine.B", "src\Nono.Engine.B\Nono.Engine.B.csproj", "{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9CB}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9908FF58-62E9-4DB1-B4EB-4DD5B21BFED1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nono.Engine.Tests", "tests\Nono.Engine.Tests\Nono.Engine.Tests.csproj", "{DB7F2071-A7FC-4879-997D-6900D20D4B93}"
@@ -31,6 +33,10 @@ Global
 		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3CEA3B0-806A-4FF8-9C02-EF44CF8EC9CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB7F2071-A7FC-4879-997D-6900D20D4B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB7F2071-A7FC-4879-997D-6900D20D4B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB7F2071-A7FC-4879-997D-6900D20D4B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
