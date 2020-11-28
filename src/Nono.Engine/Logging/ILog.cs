@@ -4,6 +4,9 @@ namespace Nono.Engine.Logging
 {
     public interface ILog
     {
+        Field InitField(Func<Field> action) 
+            => action(); 
+
         TaskCollection InitTasks(Func<TaskCollection> action) 
             => action();
 

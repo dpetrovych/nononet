@@ -24,8 +24,9 @@ namespace Nono.Engine.Tests
             {
                 var result = solver.Solve(nonogram);
 
-                output.WriteLine(GraphicsHelper.Map(result.Field));
-            });            
+                output.WriteLine(result.Field.ToString());
+                output.WriteLine($"Time: {result.Time}");
+            });
         }
     }
 }

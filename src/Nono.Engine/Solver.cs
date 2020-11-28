@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.Linq;
 using Nono.Engine.Logging;
 
 namespace Nono.Engine
@@ -17,8 +15,7 @@ namespace Nono.Engine
         public Solution Solve(Nonogram nonogram)
         {
             var start = Stopwatch.GetTimestamp();
-            var field = new Field(nonogram.Rows.Length, nonogram.Columns.Length);
-
+            var field = _log.InitField(() => new Field(nonogram.Rows.Length, nonogram.Columns.Length));
             var tasks = _log.InitTasks(() => TaskCollection.Create(nonogram));
 
             var hotheap = new Hotheap(tasks);
@@ -27,8 +24,9 @@ namespace Nono.Engine
             {
                 var fieldLine = field.GetLine(line.Index);
                 var diffLine = _log.Collapse(
-                    line, fieldLine, 
-                    (line, fieldLine) => {
+                    line, fieldLine,
+                    (line, fieldLine) =>
+                    {
                         var collapsedLine = line.Collapse(fieldLine);
                         return fieldLine.Diff(collapsedLine);
                     });

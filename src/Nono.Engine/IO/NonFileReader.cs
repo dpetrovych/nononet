@@ -6,11 +6,13 @@ namespace Nono.Engine.IO
 {
     public class NonFileReader : IDisposable
     {
+        private readonly string _name;
         private Stream? _stream;
         private bool disposedValue = false;
 
-        public NonFileReader(Stream stream)
+        public NonFileReader(string name, Stream stream)
         {
+            _name = name;
             _stream = stream;
         }
 
@@ -61,7 +63,7 @@ namespace Nono.Engine.IO
                     }
                 } while (true);
 
-                return new Nonogram(rows!, columns!);
+                return new Nonogram(rows!, columns!, _name);
             }
         }
 

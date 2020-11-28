@@ -27,6 +27,17 @@ namespace Nono.Cli
             public const int FILE_NOT_FOUND = 2;
         }
 
+        public class FileNotSolvedException : Exception
+        {
+            public FileNotSolvedException(string filepath)
+                : base($"NOT SOLVED: {filepath}")
+            {
+                FilePath = filepath;
+            }
+
+            public string FilePath { get; }
+        }
+
         public static int Main(string[] args)
         {
             try
@@ -39,8 +50,13 @@ namespace Nono.Cli
             }
             catch (FileNotFoundException ex)
             {
-                Console.Error.WriteLine(ex);
+                Console.Error.WriteLine(ex.Message);
                 return ExitCodes.FILE_NOT_FOUND;
+            }
+            catch (FileNotSolvedException ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return ExitCodes.NOT_SOLVED;
             }
             catch (Exception ex)
             {
@@ -51,13 +67,17 @@ namespace Nono.Cli
 
         private static void Run(Options options)
         {
-            using (var reader = new NonFileReader(File.OpenRead(options.Path)))
+            using (var reader = new NonFileReader(Path.GetFileName(options.Path), File.OpenRead(options.Path)))
             {
                 var nonogram = reader.Read();
 
                 var solver = new Solver(GetLogger(options));
-                var field = solver.Solve(nonogram);
+                var solution = solver.Solve(nonogram);
 
+                Console.WriteLine(solution.Field);
+                if (!solution.IsSolved)
+                    throw new FileNotSolvedException(options.Path);
+                Console.WriteLine($"Run time: {solution.Time}");
             }
 
         }

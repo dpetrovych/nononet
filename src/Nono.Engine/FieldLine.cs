@@ -18,8 +18,8 @@ namespace Nono.Engine
             if (line.Length != Length)
                 throw new ArgumentException("Mismatch in length", nameof(line));
 
-            var diffEnumerator = Enumerable.Zip(
-                this, line, (thisBox, otherBox) => thisBox == Box.Empty ? otherBox : thisBox);
+            var diffEnumerator = this.Zip(line, (thisBox, otherBox) 
+                => thisBox == Box.Empty ? otherBox : Box.Empty);
 
             return new DiffLine(diffEnumerator, Index);
         }

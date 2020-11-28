@@ -32,5 +32,22 @@ namespace Nono.Engine.Tests
             start.Should().Be(expectedStart);
             length.Should().Be(expectedLength);
         }
+
+
+        [Theory]
+        [InlineData(" 00 ", " 00 ", "    ")]
+        [InlineData(" 00 ", "100 ", "1   ")]
+        [InlineData(" 00 ", "1000", "1  0")]
+        [InlineData("    ", "1000", "1000")]
+        public void DiffLines(string field, string collapsed, string diff)
+        {
+            var index = new LineIndex(Orientation.Row, 7);
+            var fieldLine = new FieldLine(field.AsBoxEnumerable(), index);
+
+            var diffLine = fieldLine.Diff(new CollapseLine(collapsed.AsBoxEnumerable(), 1));
+
+            diffLine.Should().Equal(diff.AsBoxEnumerable());
+            diffLine.Index.Should().Be(index);
+        }
     }
 }

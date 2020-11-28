@@ -11,9 +11,9 @@ namespace Nono.Engine.Tests.Suits
         {
             var testFiles = TestResources.GetAllFiles();
 
-            foreach (var testFile in testFiles)
+            foreach (var (name, testFile) in testFiles)
             {
-                using (var reader = new NonFileReader(testFile))
+                using (var reader = new NonFileReader(name, testFile))
                 {
                     var nonogram = reader.Read();
 

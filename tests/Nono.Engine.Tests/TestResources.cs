@@ -8,14 +8,14 @@ namespace Nono.Engine.Tests
 {
     public static class TestResources
     {
-        public static IEnumerable<Stream> GetAllFiles()
+        public static IEnumerable<(string name, Stream stream)> GetAllFiles()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var embeddedTests = assembly.GetManifestResourceNames()
                 .Where(x => x.EndsWith(".non"));
 
-            return embeddedTests.Select<string, Stream>(
-                name => assembly.GetManifestResourceStream(name));
+            return embeddedTests.Select<string, (string, Stream)>(
+                name => (name, assembly.GetManifestResourceStream(name)));
         }
     }
 }

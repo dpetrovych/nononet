@@ -9,7 +9,7 @@ namespace Nono.Engine
         {
             Field = field;
             Time = time;
-            IsSolved = field.Any(x => x == Box.Empty);
+            IsSolved = !field.Any(x => x == Box.Empty);
         }
 
         public Field Field { get; }
