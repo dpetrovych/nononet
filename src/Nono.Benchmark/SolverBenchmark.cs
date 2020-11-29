@@ -27,11 +27,11 @@ namespace Nono.Benchmark
                 this.nonogramb = reader.Read();
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public Solution Solver() => new Solver(new NullLog()).Solve(nonogram);
 
-         [Benchmark]
-        public SolutionB SolverB() => new SolverB(new NullLogB()).Solve(nonogramb);
+        [Benchmark(Baseline = true)]
+        public SolutionB SolverBase() => new SolverB(new NullLogB()).Solve(nonogramb);
     }
 
     public class TigerBenchmark : SolverBenchmark

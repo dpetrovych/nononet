@@ -12,7 +12,7 @@ namespace Nono.Engine
 {
     public static class CollapseOperation
     {
-        public static CollapseLine? Run(SCues cues, SBox fieldLine)
+        public static CollapseLine Run(SCues cues, SBox fieldLine)
         {
             if (cues.Length == 0 || (cues.Length == 1 && cues[0] == 0))
                 return CollapseLine.Crossed(fieldLine.Length);
@@ -28,28 +28,32 @@ namespace Nono.Engine
             return Inplace(cues, fieldLine);
         }
 
-        private static CollapseLine? DivideByCrossed(SCues cues, SBox fieldLine, int start, int end)
+        private static CollapseLine DivideByCrossed(SCues cues, SBox fieldLine, int start, int end)
         {
-            var result = new CollapseCollector();
+            var collector = new CollapseCollector();
             for (int i = 0; i <= cues.Length; i++)
             {
-                var (left, right) = PrioritizedRun(
+                var result = PrioritizedRun(
                     cues[..i], fieldLine[..start],
                     cues[i..], fieldLine[end..]);
 
-                if (left == null || right == null)
+                if (!result.HasValue)
                     continue;
 
-                var line = JoinParts(left, Enumerable.Repeat(Box.Crossed, end - start), right);
-                result.Add(line, left.CombinationsCount * right.CombinationsCount);
+                var line = JoinParts(
+                    result.Left.Boxes, 
+                    Enumerable.Repeat(Box.Crossed, end - start), 
+                    result.Right.Boxes);
+
+                collector.Add(line, result.CombinationsCount);
             }
 
-            return result.ToCollapseLine();
+            return collector.ToCollapseLine();
         }
 
-        private static CollapseLine? DivideByFilled(SCues cues, SBox fieldLine, int start, int end)
+        private static CollapseLine DivideByFilled(SCues cues, SBox fieldLine, int start, int end)
         {
-            var result = new CollapseCollector();
+            var collector = new CollapseCollector();
             for (int cueIndex = 0; cueIndex < cues.Length; cueIndex++)
             {
                 var cue = cues[cueIndex];
@@ -67,31 +71,31 @@ namespace Nono.Engine
                         || fieldLine[posEnd..rightEdge].Any(Box.Filled))
                         continue;
 
-                    var (left, right) = PrioritizedRun(
+                    var result = PrioritizedRun(
                         cues[..cueIndex], fieldLine[..leftEdge],
                         cues[(cueIndex + 1)..], fieldLine[rightEdge..]);
 
-                    if (left == null || right == null)
+                    if (!result.HasValue)
                         continue;
 
                     var line = JoinParts(
-                        left,
+                        result.Left.Boxes,
                         Enumerable.Repeat(Box.Crossed, leftBum),
                         Enumerable.Repeat(Box.Filled, cue),
                         Enumerable.Repeat(Box.Crossed, rightBum),
-                        right);
+                        result.Right.Boxes);
 
-                    result.Add(line, left.CombinationsCount * right.CombinationsCount);
+                    collector.Add(line, result.CombinationsCount);
                 }
             }
 
-            return result.ToCollapseLine();
+            return collector.ToCollapseLine();
         }
 
         private static IEnumerable<Box> JoinParts(params IEnumerable<Box>[] parts)
             => parts.SelectMany(x => x);
 
-        private static CollapseLine? Inplace(SCues cues, SBox fieldLine)
+        private static CollapseLine Inplace(SCues cues, SBox fieldLine)
         {
             var moveSpace = Combinations.Moves(cues, fieldLine.Length);
             if (moveSpace == 0)
@@ -152,31 +156,31 @@ namespace Nono.Engine
             }
         }
 
-        private static (CollapseLine? left, CollapseLine? right) PrioritizedRun(
+        private static CollapseLinePair PrioritizedRun(
             SCues leftCues, SBox leftLine,
             SCues rightCues, SBox rightLine)
         {
             if (!ShouldRun(leftCues, leftLine) || !ShouldRun(rightCues, rightLine))
-                return (null, null);
+                return new CollapseLinePair();
 
-            CollapseLine? left;
-            CollapseLine? right;
+            CollapseLine left;
+            CollapseLine right;
             if (leftCues.Length <= rightCues.Length)
             {
                 left = Run(leftCues, leftLine);
-                right = left != null
+                right = left.HasValue
                     ? Run(rightCues, rightLine)
-                    : null;
+                    : new CollapseLine();
             }
             else
             {
                 right = Run(rightCues, rightLine);
-                left = right != null
+                left = right.HasValue
                     ? Run(leftCues, leftLine)
-                    : null;
+                    : new CollapseLine();
             }
 
-            return (left, right);
+            return new CollapseLinePair(left, right);
         }
 
         private static bool ShouldRun(SCues cues, SBox line)

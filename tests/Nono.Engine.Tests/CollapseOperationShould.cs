@@ -11,7 +11,7 @@ namespace Nono.Engine.Tests
         {
             var line = CollapseOperation.Run(new[] { 3 }, "     ".AsSpan());
 
-            line.Should().Equal("  —  ".AsBoxEnumerable());
+            line.Boxes.Should().Equal("  —  ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(3);
         }
 
@@ -22,7 +22,7 @@ namespace Nono.Engine.Tests
                 new[] { 1, 1, 1, 4, 2 },
                 "             ".AsSpan());
 
-            line.Should().Equal("1x1x1x1111x11".AsBoxEnumerable());
+            line.Boxes.Should().Equal("1x1x1x1111x11".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(1L);
         }
 
@@ -31,7 +31,7 @@ namespace Nono.Engine.Tests
         {
             var line = CollapseOperation.Run(new[] { 2 }, "    xxxxxxxx  xxxxx ".AsSpan());
 
-            line.Should().Equal("    xxxxxxxx  xxxxxx".AsBoxEnumerable());
+            line.Boxes.Should().Equal("    xxxxxxxx  xxxxxx".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(4);
         }
 
@@ -40,7 +40,7 @@ namespace Nono.Engine.Tests
         {
             var line = CollapseOperation.Run(new[] { 2, 1 }, "     ".AsSpan());
 
-            line.Should().Equal(" —   ".AsBoxEnumerable());
+            line.Boxes.Should().Equal(" —   ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(3);
         }
 
@@ -49,7 +49,7 @@ namespace Nono.Engine.Tests
         {
             var line = CollapseOperation.Run(new[] { 2, 1 }, "  00 0".AsSpan());
 
-            line.Should().Equal("110010".AsBoxEnumerable());
+            line.Boxes.Should().Equal("110010".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(1);
         }
 
@@ -58,7 +58,7 @@ namespace Nono.Engine.Tests
         {
             var line = CollapseOperation.Run(new[] { 1, 2, 3 }, "          ".AsSpan());
 
-            line.Should().Equal("       —  ".AsBoxEnumerable());
+            line.Boxes.Should().Equal("       —  ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(10);
         }
 
@@ -69,7 +69,7 @@ namespace Nono.Engine.Tests
                 new[] { 3, 30, 1, 5 },
                 "  —                                      —   ".AsSpan());
 
-            line.Should().Equal("  —    ———————————————————————————      ——   ".AsBoxEnumerable());
+            line.Boxes.Should().Equal("  —    ———————————————————————————      ——   ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(34);
         }
 
@@ -80,7 +80,7 @@ namespace Nono.Engine.Tests
                 new[] { 4, 6, 1, 3, 2, 2, 3, 4, 1 },
                 "xxxxx————x——————x— x———xxx——x——xx———x             ".AsSpan());
 
-            line.Should().Equal("xxxxx————x——————x—xx———xxx——x——xx———x             ".AsBoxEnumerable());
+            line.Boxes.Should().Equal("xxxxx————x——————x—xx———xxx——x——xx———x             ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(36);
         }
 
@@ -91,7 +91,7 @@ namespace Nono.Engine.Tests
                 new[] { 1, 2, 2, 1, 12, 1, 2, 2 },
                 "             x                    — —  ——                                  ".AsSpan());
 
-            line.Should().Equal("             x                    — —  ——                                  ".AsBoxEnumerable());
+            line.Boxes.Should().Equal("             x                    — —  ——                                  ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(177581035L);
         }
 
@@ -102,7 +102,7 @@ namespace Nono.Engine.Tests
                 new[] { 4, 1, 6 },
                 "            —                 ".AsSpan());
 
-            line.Should().Equal("            —                 ".AsBoxEnumerable());
+            line.Boxes.Should().Equal("            —                 ".AsBoxEnumerable());
             line.CombinationsCount.Should().Be(274L);
         }
     }

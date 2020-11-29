@@ -28,7 +28,7 @@ namespace Nono.Engine
                     (line, fieldLine) =>
                     {
                         var collapsedLine = line.Collapse(fieldLine);
-                        return fieldLine.Diff(collapsedLine);
+                        return fieldLine.Diff(collapsedLine.Boxes);
                     });
 
                 hotheap.PushDiff(diffLine);

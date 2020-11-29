@@ -20,10 +20,12 @@ namespace Nono.Engine
 
         public long CombinationsCount { get; private set; }
 
-        public Line Collapse(FieldLine fieldLine)
+        public CollapseLine Collapse(FieldLine fieldLine)
         {
-            var result = CollapseOperation.Run(this.Cues, fieldLine)
-                ?? throw new Exception("Line is unsolvable");
+            var result = CollapseOperation.Run(this.Cues, fieldLine);
+            if (!result.HasValue)
+                throw new Exception("Line is unsolvable");
+
             CombinationsCount = result.CombinationsCount;
             return result;
         }

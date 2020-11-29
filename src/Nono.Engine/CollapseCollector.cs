@@ -31,9 +31,9 @@ namespace Nono.Engine
             _combinationsCount += combinationsCount;
         }
 
-        public CollapseLine? ToCollapseLine() 
+        public CollapseLine ToCollapseLine() 
             => _boxes != null 
                 ? new CollapseLine(_boxes, _combinationsCount) 
-                : null;
+                : new CollapseLine();
     }
 }

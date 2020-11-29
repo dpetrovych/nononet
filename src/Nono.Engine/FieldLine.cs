@@ -13,11 +13,8 @@ namespace Nono.Engine
 
         public LineIndex Index { get; }
 
-        public DiffLine Diff(Line line)
+        public DiffLine Diff(IEnumerable<Box> line)
         {
-            if (line.Length != Length)
-                throw new ArgumentException("Mismatch in length", nameof(line));
-
             var diffEnumerator = this.Zip(line, (thisBox, otherBox) 
                 => thisBox == Box.Empty ? otherBox : Box.Empty);
 
