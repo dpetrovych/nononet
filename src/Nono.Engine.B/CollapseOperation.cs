@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 using Nono.Engine.B.Extensions;
@@ -29,7 +30,7 @@ namespace Nono.Engine.B
 
         private static CollapseLine? DivideByCrossed(SCues cues, SBox fieldLine, int start, int end)
         {
-            CollapseLine? result = null;
+            var result = new CollapseCollector();
             for (int i = 0; i <= cues.Length; i++)
             {
                 var (left, right) = PrioritizedRun(
@@ -39,16 +40,16 @@ namespace Nono.Engine.B
                 if (left == null || right == null)
                     continue;
 
-                var line = CollapseLine.Join(left, Enumerable.Repeat(Box.Crossed, end - start), right);
-                result = result?.Add(line) ?? line;
+                var line = JoinParts(left, Enumerable.Repeat(Box.Crossed, end - start), right);
+                result.Add(line, left.CombinationsCount * right.CombinationsCount);
             }
 
-            return result;
+            return result.ToCollapseLine();
         }
 
         private static CollapseLine? DivideByFilled(SCues cues, SBox fieldLine, int start, int end)
         {
-            CollapseLine? result = null;
+            var result = new CollapseCollector();
             for (int cueIndex = 0; cueIndex < cues.Length; cueIndex++)
             {
                 var cue = (int)cues[cueIndex];
@@ -74,19 +75,22 @@ namespace Nono.Engine.B
                     if (left == null || right == null)
                         continue;
 
-                    var line = CollapseLine.Join(
+                    var line = JoinParts(
                         left,
                         Enumerable.Repeat(Box.Crossed, leftBum),
                         Enumerable.Repeat(Box.Filled, cue),
                         Enumerable.Repeat(Box.Crossed, rightBum),
                         right);
 
-                    result = result?.Add(line) ?? line;
+                    result.Add(line, left.CombinationsCount * right.CombinationsCount);
                 }
             }
 
-            return result;
+            return result.ToCollapseLine();
         }
+
+        private static IEnumerable<Box> JoinParts(params IEnumerable<Box>[] parts)
+            => parts.SelectMany(x => x);
 
         private static CollapseLine? Inplace(SCues cues, SBox fieldLine)
         {
