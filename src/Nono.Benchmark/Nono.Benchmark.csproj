@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nono.Engine\Nono.Engine.csproj" />
-    <ProjectReference Include="..\Nono.Engine.B\Nono.Engine.B.csproj" />
   </ItemGroup>
 
   <ItemGroup>
