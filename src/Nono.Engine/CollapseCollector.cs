@@ -7,9 +7,9 @@ namespace Nono.Engine
     {
         private Box[]? _boxes;
 
-        private long _combinationsCount;
+        private decimal _combinationsCount;
 
-        public void Add(IEnumerable<Box> line, long combinationsCount)
+        public void Add(IEnumerable<Box> line, decimal combinationsCount)
         {
             if (_boxes == null) 
             {

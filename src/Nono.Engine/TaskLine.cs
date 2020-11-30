@@ -13,12 +13,12 @@ namespace Nono.Engine
         }
 
         public int[] Cues { get; }
-        
+
         public int Length { get; }
 
         public LineIndex Index { get; }
 
-        public long CombinationsCount { get; private set; }
+        public decimal CombinationsCount { get; private set; }
 
         public CollapseLine Collapse(FieldLine fieldLine)
         {

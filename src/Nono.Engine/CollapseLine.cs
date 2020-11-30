@@ -18,16 +18,16 @@ namespace Nono.Engine
 
         public readonly bool HasValue => Left.HasValue && Right.HasValue;
 
-        public readonly long CombinationsCount => Left.CombinationsCount * Right.CombinationsCount;
+        public readonly decimal CombinationsCount => Left.CombinationsCount * Right.CombinationsCount;
     }
 
     public readonly ref struct CollapseLine
     {
         public readonly Box[] Boxes;
 
-        public readonly long CombinationsCount;
+        public readonly decimal CombinationsCount;
 
-        public CollapseLine(IEnumerable<Box> boxes, long combinationsCount)
+        public CollapseLine(IEnumerable<Box> boxes, decimal combinationsCount)
         {
             Boxes = boxes.ToArray();
             CombinationsCount = combinationsCount;
@@ -35,7 +35,7 @@ namespace Nono.Engine
 
         public readonly bool HasValue => Boxes != null;
 
-        public static CollapseLine Empty(int length, long combinationsCount)
+        public static CollapseLine Empty(int length, decimal combinationsCount)
             => new CollapseLine(Enumerable.Repeat(Box.Empty, length), combinationsCount);
 
         public static CollapseLine Crossed(int length)
