@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +12,7 @@ namespace Nono.Engine
         public Hotheap(TaskCollection tasks)
         {
             _tasks = tasks;
-            _heap = tasks.Where(task => task.IsHotEmpty).ToHashSet();
+            _heap = tasks.Where(task => Combinations.IsHot(task.Cues, task.Length)).ToHashSet();
         }
 
         public bool TryPop(out TaskLine line)
@@ -29,9 +28,7 @@ namespace Nono.Engine
         public void PushDiff(DiffLine diff)
         {
             var opposite = diff.Index.Orienation.Opposite();
-            var oppsiteTasks = diff
-                .NonEmptyIndexes()
-                .Select(i => _tasks[opposite, i]);
+            var oppsiteTasks = diff.NonEmptyIndexes.Select(i => _tasks[opposite, i]);
 
             _heap.UnionWith(oppsiteTasks);
         }

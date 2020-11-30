@@ -100,7 +100,7 @@ namespace Nono.Engine
         public void Set(DiffLine line)
         {
             var fieldIndexer = GetLineIndexer(line.Index);
-            foreach (var i in line.NonEmptyIndexes())
+            foreach (var i in line.NonEmptyIndexes)
                 _field.SetValue(line[i], fieldIndexer(i));
         }
 

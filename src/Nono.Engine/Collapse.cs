@@ -10,7 +10,7 @@ using SCues = System.ReadOnlySpan<int>;
 
 namespace Nono.Engine
 {
-    public static class CollapseOperation
+    public static class Collapse
     {
         public static CollapseLine Run(SCues cues, SBox fieldLine)
         {
@@ -41,8 +41,8 @@ namespace Nono.Engine
                     continue;
 
                 var line = JoinParts(
-                    result.Left.Boxes, 
-                    Enumerable.Repeat(Box.Crossed, end - start), 
+                    result.Left.Boxes,
+                    Enumerable.Repeat(Box.Crossed, end - start),
                     result.Right.Boxes);
 
                 collector.Add(line, result.CombinationsCount);
@@ -144,6 +144,7 @@ namespace Nono.Engine
                     {
                         line[cursor + i] = Box.Empty;
                     }
+
                     cursor += MIN_BLOCK_SPACE;
                 }
 

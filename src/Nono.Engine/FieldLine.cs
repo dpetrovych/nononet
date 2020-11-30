@@ -15,7 +15,7 @@ namespace Nono.Engine
 
         public DiffLine Diff(IEnumerable<Box> line)
         {
-            var diffEnumerator = this.Zip(line, (thisBox, otherBox) 
+            var diffEnumerator = Boxes.Zip(line, (thisBox, otherBox) 
                 => thisBox == Box.Empty ? otherBox : Box.Empty);
 
             return new DiffLine(diffEnumerator, Index);

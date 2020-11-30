@@ -7,22 +7,22 @@ namespace Nono.Engine
         public TaskLine(int[] cues, int length, LineIndex index)
         {
             Cues = cues;
+            Length = length;
             Index = index;
-            IsHotEmpty = Combinations.IsHot(cues, length);
             CombinationsCount = Combinations.Count(cues, length);
         }
 
         public int[] Cues { get; }
+        
+        public int Length { get; }
 
         public LineIndex Index { get; }
-
-        public bool IsHotEmpty { get; }
 
         public long CombinationsCount { get; private set; }
 
         public CollapseLine Collapse(FieldLine fieldLine)
         {
-            var result = CollapseOperation.Run(this.Cues, fieldLine);
+            var result = Engine.Collapse.Run(this.Cues, fieldLine);
             if (!result.HasValue)
                 throw new Exception("Line is unsolvable");
 
