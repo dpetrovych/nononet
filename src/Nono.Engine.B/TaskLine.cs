@@ -4,26 +4,28 @@ namespace Nono.Engine.B
 {
     public class TaskLine
     {
-        public TaskLine(uint[] cues, int length, LineIndex index)
+        public TaskLine(int[] cues, int length, LineIndex index)
         {
             Cues = cues;
+            Length = length;
             Index = index;
-            IsHotEmpty = Combinations.IsHot(cues, length);
             CombinationsCount = Combinations.Count(cues, length);
         }
 
-        public uint[] Cues { get; }
+        public int[] Cues { get; }
+        
+        public int Length { get; }
 
         public LineIndex Index { get; }
 
-        public bool IsHotEmpty { get; }
-
         public long CombinationsCount { get; private set; }
 
-        public Line Collapse(FieldLine fieldLine)
+        public CollapseLine Collapse(FieldLine fieldLine)
         {
-            var result = CollapseOperation.Run(this.Cues, fieldLine)
-                ?? throw new Exception("Line is unsolvable");
+            var result = Engine.B.Collapse.Run(this.Cues, fieldLine);
+            if (!result.HasValue)
+                throw new Exception("Line is unsolvable");
+
             CombinationsCount = result.CombinationsCount;
             return result;
         }

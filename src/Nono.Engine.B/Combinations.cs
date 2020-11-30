@@ -60,14 +60,14 @@ namespace Nono.Engine.B
 
         /// Also reduces all blocks in cues to length of 1 and space to length of 1.
         /// </summary>
-        public static long Count(ReadOnlySpan<uint> cues, int length)
+        public static long Count(ReadOnlySpan<int> cues, int length)
         {
             var extraBlockSpace = (MIN_BLOCK_SPACE - 1) * (cues.Length - 1);
             var extraBlockLength = cues.Sum() - cues.Length;
-            return CountZippedBlocks(cues.Length, (int)(length - extraBlockSpace - extraBlockLength));
+            return CountZippedBlocks(cues.Length, (length - extraBlockSpace - extraBlockLength));
         }
 
-        public static bool IsHot(ReadOnlySpan<uint> cues, int length)
+        public static bool IsHot(ReadOnlySpan<int> cues, int length)
         {
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
 
@@ -75,11 +75,11 @@ namespace Nono.Engine.B
             return Moves(cues, length) < maxBlock;
         }
 
-        public static int Moves(ReadOnlySpan<uint> cues, int length)
+        public static int Moves(ReadOnlySpan<int> cues, int length)
         {
             unchecked
             {
-                return (int)(length - cues.Sum() - MIN_BLOCK_SPACE * (cues.Length - 1));
+                return length - cues.Sum() - MIN_BLOCK_SPACE * (cues.Length - 1);
             }
         }
     }

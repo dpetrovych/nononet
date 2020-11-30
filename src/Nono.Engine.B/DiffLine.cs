@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Nono.Engine.B
 {
@@ -7,15 +8,18 @@ namespace Nono.Engine.B
         public DiffLine(IEnumerable<Box> boxes, LineIndex index) : base(boxes)
         {
             Index = index;
+            NonEmptyIndexes = NonEmptyIndexesEnumerator(Boxes).ToArray();
         }
 
         public LineIndex Index { get; }
 
-        public IEnumerable<int> NonEmptyIndexes()
+        public int[] NonEmptyIndexes { get; }
+
+        private static IEnumerable<int> NonEmptyIndexesEnumerator(Box[] boxes)
         {
-            for (int i = 0; i < Length; i++)
+            for (int i = 0; i < boxes.Length; i++)
             {
-                if (this[i] != Box.Empty)
+                if (boxes[i] != Box.Empty)
                     yield return i;
             }
         }

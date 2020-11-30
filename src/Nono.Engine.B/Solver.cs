@@ -15,7 +15,7 @@ namespace Nono.Engine.B
         public Solution Solve(Nonogram nonogram)
         {
             var start = Stopwatch.GetTimestamp();
-            var field = _log.InitField(() => new Field(nonogram.Rows.Length, nonogram.Columns.Length));
+            var field = _log.InitField(() => new Field(nonogram.RowsCount, nonogram.ColumnsCount));
             var tasks = _log.InitTasks(() => TaskCollection.Create(nonogram));
 
             var hotheap = new Hotheap(tasks);
@@ -28,7 +28,7 @@ namespace Nono.Engine.B
                     (line, fieldLine) =>
                     {
                         var collapsedLine = line.Collapse(fieldLine);
-                        return fieldLine.Diff(collapsedLine);
+                        return fieldLine.Diff(collapsedLine.Boxes);
                     });
 
                 hotheap.PushDiff(diffLine);
