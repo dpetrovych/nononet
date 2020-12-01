@@ -19,9 +19,9 @@ namespace Nono.Engine
                 throw new ArgumentOutOfRangeException(nameof(columnCount));
 
             RowCount = rowCount;
-            ColumnCount = columnCount;
-
-            _field = new Box[rowCount * columnCount];
+            RowSize = ColumnCount = columnCount;
+            
+            _field = (Box[])Array.CreateInstance(typeof(Box), unchecked(RowCount * RowSize));
             Array.Fill(_field, Box.Empty);
         }
 
@@ -29,16 +29,13 @@ namespace Nono.Engine
 
         public int ColumnCount { get; }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int GetPosition(int rowIndex, int columnIndex)
-        {
-            unchecked
-            {
-                return rowIndex * ColumnCount + columnIndex;
-            }
-        }
+        private long RowSize { get; }
 
-        private Func<int, int> GetRowIndexer(int rowIndex)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private long GetPosition(int rowIndex, int columnIndex)
+            => unchecked(rowIndex * RowSize + columnIndex);
+
+        private Func<int, long> GetRowIndexer(int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= RowCount)
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));
@@ -46,7 +43,7 @@ namespace Nono.Engine
             return columnIndex => GetPosition(rowIndex, columnIndex);
         }
 
-        private Func<int, int> GetColumnIndexer(int columnIndex)
+        private Func<int, long> GetColumnIndexer(int columnIndex)
         {
             if (columnIndex < 0 || columnIndex >= ColumnCount)
                 throw new ArgumentOutOfRangeException(nameof(columnIndex));
@@ -87,7 +84,7 @@ namespace Nono.Engine
             throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        public Func<int, int> GetLineIndexer(LineIndex index)
+        public Func<int, long> GetLineIndexer(LineIndex index)
         {
             switch (index.Orienation)
             {
@@ -103,8 +100,8 @@ namespace Nono.Engine
         public void Set(DiffLine line)
         {
             var fieldIndexer = GetLineIndexer(line.Index);
-            foreach (var i in line.NonEmptyIndexes())
-                _field[fieldIndexer(i)] = line[i];
+            foreach (var i in line.NonEmptyIndexes)
+                _field.SetValue(line[i], fieldIndexer(i));
         }
 
         public IEnumerator<Box> GetEnumerator()

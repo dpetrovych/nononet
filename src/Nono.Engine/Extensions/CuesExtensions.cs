@@ -4,19 +4,20 @@ namespace Nono.Engine.Extensions
 {
     public static class CuesExtensions
     {
-        public static long Sum(this ReadOnlySpan<uint> span)
+        public static int Sum(this ReadOnlySpan<int> span)
         {
-            long sum = 0L;
-            foreach (var element in span)
+            int sum = 0;
+            for (int i = 0; i < span.Length; i++)
             {
-                sum += element;
+                sum += span[i];
             }
+
             return sum;
         }
 
-        public static uint Max(this ReadOnlySpan<uint> span)
+        public static int Max(this ReadOnlySpan<int> span)
         {
-            uint max = span[0];
+            int max = span[0];
             for (int i = 1; i < span.Length; i++)
             {
                 var element = span[i];

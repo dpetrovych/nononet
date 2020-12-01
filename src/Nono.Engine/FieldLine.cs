@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Nono.Engine
@@ -13,12 +14,9 @@ namespace Nono.Engine
 
         public LineIndex Index { get; }
 
-        public DiffLine Diff(Line line)
+        public DiffLine Diff(IEnumerable<Box> line)
         {
-            if (line.Length != Length)
-                throw new ArgumentException("Mismatch in length", nameof(line));
-
-            var diffEnumerator = this.Zip(line, (thisBox, otherBox) 
+            var diffEnumerator = Boxes.Zip(line, (thisBox, otherBox) 
                 => thisBox == Box.Empty ? otherBox : Box.Empty);
 
             return new DiffLine(diffEnumerator, Index);
@@ -27,6 +25,9 @@ namespace Nono.Engine
 
     public static class FieldLineExtensions
     {
+        private static readonly ConcurrentDictionary<int, int[]> IndexFromCenterCache
+            = new ConcurrentDictionary<int, int[]>();
+
         public static IEnumerable<int> IndexFromCenter(int length)
         {
             var middleLeft = (length - 1) >> 1;
@@ -45,7 +46,11 @@ namespace Nono.Engine
 
         public static int FindCenterBox(ReadOnlySpan<Box> fieldSpan, Box value)
         {
-            foreach (var i in IndexFromCenter(fieldSpan.Length))
+            var indexFromCenter = IndexFromCenterCache.GetOrAdd(
+                fieldSpan.Length, 
+                len => IndexFromCenter(len).ToArray());
+
+            foreach (var i in indexFromCenter)
             {
                 if (fieldSpan[i] == value)
                     return i;

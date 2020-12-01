@@ -2,7 +2,7 @@ using System;
 
 namespace Nono.Engine
 {
-    public enum Orientation
+    public enum Orientation : byte
     {
         Row = 0,
         Column = 1,

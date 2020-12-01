@@ -44,7 +44,7 @@ namespace Nono.Engine.Tests
             var index = new LineIndex(Orientation.Row, 7);
             var fieldLine = new FieldLine(field.AsBoxEnumerable(), index);
 
-            var diffLine = fieldLine.Diff(new CollapseLine(collapsed.AsBoxEnumerable(), 1));
+            var diffLine = fieldLine.Diff(collapsed.AsBoxEnumerable());
 
             diffLine.Should().Equal(diff.AsBoxEnumerable());
             diffLine.Index.Should().Be(index);

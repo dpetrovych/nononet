@@ -17,8 +17,8 @@ namespace Nono.Engine.Tests
         public void BulkFill_Rectangle(int rowPower, int columnPower)
         {
             // Arrange
-            var rowHint = new[] { (uint)columnPower };
-            var columnHint = new[] { (uint)rowPower };
+            var rowHint = new [] { columnPower };
+            var columnHint = new [] { rowPower };
 
             var solve = new Solver(new NullLog());
             var nonogram = new Nonogram(Enumerable.Repeat(rowHint, rowPower), Enumerable.Repeat(columnHint, columnPower));

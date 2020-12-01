@@ -11,13 +11,14 @@ namespace Nono.Benchmark
     public abstract class SolverBenchmark
     {
         private readonly Nonogram nonogram;
+
         public SolverBenchmark(string file)
         {
             using (var reader = new NonFileReader(File.OpenRead($".\\Data\\{file}")))
                 this.nonogram = reader.Read();
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public Solution Solver() => new Solver(new NullLog()).Solve(nonogram);
     }
 

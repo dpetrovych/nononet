@@ -11,15 +11,15 @@ namespace Nono.Engine
 {
     public static class Combinations
     {
-        private static readonly ConcurrentDictionary<(int, int), long> ZippedBlocksCountCache
-            = new ConcurrentDictionary<(int, int), long>();
+        private static readonly ConcurrentDictionary<(int, int), decimal> ZippedBlocksCountCache
+            = new ConcurrentDictionary<(int, int), decimal>();
 
         /// <summary>
         /// Calculate count of all combinations of n blocks of size 1 fit in length with spaces of size 1
         /// </summary>
-        public static long CountZippedBlocks(int n, int length)
+        public static decimal CountZippedBlocks(int n, int length)
         {
-            long Count((int n, int length) arg)
+            decimal Count((int n, int length) arg)
             {
                 if (arg.n == 1)
                     return arg.length;
@@ -41,9 +41,9 @@ namespace Nono.Engine
             return ZippedBlocksCountCache.GetOrAdd((n, length), Count);
         }
 
-        private static IEnumerable<long> Derivative(IEnumerable<long> enumerable, long start = 0)
+        private static IEnumerable<decimal> Derivative(IEnumerable<decimal> enumerable, decimal start = 0)
         {
-            long prev = start;
+            decimal prev = start;
             foreach (var item in enumerable)
             {
                 yield return item - prev;
@@ -60,14 +60,14 @@ namespace Nono.Engine
 
         /// Also reduces all blocks in cues to length of 1 and space to length of 1.
         /// </summary>
-        public static long Count(ReadOnlySpan<uint> cues, int length)
+        public static decimal Count(ReadOnlySpan<int> cues, int length)
         {
             var extraBlockSpace = (MIN_BLOCK_SPACE - 1) * (cues.Length - 1);
             var extraBlockLength = cues.Sum() - cues.Length;
-            return CountZippedBlocks(cues.Length, (int)(length - extraBlockSpace - extraBlockLength));
+            return CountZippedBlocks(cues.Length, (length - extraBlockSpace - extraBlockLength));
         }
 
-        public static bool IsHot(ReadOnlySpan<uint> cues, int length)
+        public static bool IsHot(ReadOnlySpan<int> cues, int length)
         {
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
 
@@ -75,11 +75,11 @@ namespace Nono.Engine
             return Moves(cues, length) < maxBlock;
         }
 
-        public static int Moves(ReadOnlySpan<uint> cues, int length)
+        public static int Moves(ReadOnlySpan<int> cues, int length)
         {
             unchecked
             {
-                return (int)(length - cues.Sum() - MIN_BLOCK_SPACE * (cues.Length - 1));
+                return length - cues.Sum() - MIN_BLOCK_SPACE * (cues.Length - 1);
             }
         }
     }
