@@ -7,7 +7,8 @@ using Nono.Engine;
 namespace Nono.Benchmark
 {
     /// <summary>
-    /// Finding out difference between for and foreach for ReadOnlySpan. It's statistically insignificant.
+    /// Finding out difference between for and foreach for ReadOnlySpan.
+    /// From decompilation: generated code is identical.
     /// 
     ///|     Method |     Mean |    Error |   StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
     ///|----------- |---------:|---------:|---------:|------:|--------:|-------:|------:|------:|----------:|
